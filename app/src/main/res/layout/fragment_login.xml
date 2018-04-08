@@ -7,16 +7,17 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:layout_marginLeft="25dp"
-    android:layout_marginRight="5dp"
+    android:layout_marginRight="25dp"
 
     >
 
     <ImageView
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="20dp"
         android:layout_width="230dp"
         android:layout_height="230dp"
-        android:background="@mipmap/yylogo" />
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:background="@mipmap/yylogo"
+        android:cropToPadding="false" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -34,14 +35,14 @@
             android:layout_weight="1"
             android:text="Username"
             android:textColor="#FF199DD8"
-            android:textSize="24sp"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <EditText
             android:id="@+id/fragment_login_userName"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="2"
+            android:layout_weight="2.7"
             android:textAlignment="center" />
 
 
@@ -59,14 +60,14 @@
             android:layout_weight="1"
             android:text="Password"
             android:textColor="#FF199DD8"
-            android:textSize="24sp"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <EditText
             android:id="@+id/fragment_login_userPassword"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="2"
+            android:layout_weight="2.8"
             android:inputType="textPassword"
             android:textAlignment="center" />
 
