@@ -56,7 +56,7 @@ public class HomeFragment extends BaseFragment {
 
     private Unbinder mUnbinder;
 
-    String id="003W000000ngacFIAQ";
+    String id;
 
 
 
@@ -66,20 +66,27 @@ public class HomeFragment extends BaseFragment {
         View rootView = inflater.inflate(R.layout.fragment_home,container,false);
         mUnbinder = ButterKnife.bind(this,rootView);
 
-        //if (getArguments()!=null){
-
-       // id = getArguments().getString("id"); //gives me null why??????
-        Log.e("inside_the_getarg","hey");
-
-        //}
-
-
-
 
 
         return rootView;
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (getArguments()!=null){
+
+            id = getArguments().getString("id"); //gives me null why??????
+            Log.e("inside_the_getarg","hey");
+
+        }
+
+
+
+
+    }
 
     public static HomeFragment newInstance(){
         return new HomeFragment();
@@ -141,7 +148,7 @@ public class HomeFragment extends BaseFragment {
             // TODO Auto-generated method stub
 
             //String json =  "{\"username\": \"sampada\",\"password\":\"password123\"}";
-            id = "003W000000ngacFIAQ";
+
             //id = params[1];
             Log.i("param",params[0]+"."+params[1]);
 

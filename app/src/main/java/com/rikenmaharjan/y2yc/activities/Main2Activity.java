@@ -32,7 +32,7 @@ public class Main2Activity extends AppCompatActivity
     private ViewLotteryResultFragment vlrf;
     private FragmentManager fm;
     private HomeFragment hm;
-    private String sender ;
+    public String sender;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,11 +157,15 @@ public class Main2Activity extends AppCompatActivity
 
             Toast.makeText(this, "Received", Toast.LENGTH_SHORT).show();
 
-            //String data  = sender;
+            String data  = sender;
             Log.i("data",sender);
-            //Bundle args = new Bundle();
-            //args.putString("id",data);
+            Bundle args = new Bundle();
+            args.putString("id",data);
 
+             fbsf.setArguments(args);
+             vlrf.setArguments(args);
+
+             hm.setArguments(args);
             //fragInfo.putArguments(args);
 
 
