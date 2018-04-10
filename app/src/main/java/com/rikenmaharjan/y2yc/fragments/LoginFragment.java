@@ -19,6 +19,7 @@ import com.rikenmaharjan.y2yc.activities.HomeActivity;
 import com.rikenmaharjan.y2yc.activities.Main2Activity;
 import com.rikenmaharjan.y2yc.utils.Constants;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
@@ -132,6 +133,7 @@ public class LoginFragment extends BaseFragment {
             response = new String();
 
 
+
             try {
                 //URL url = new URL("http://168.122.222.63:3000/login");  // for BU localhost
 
@@ -182,6 +184,10 @@ public class LoginFragment extends BaseFragment {
                         Log.i("Json",(String)(sb.getClass().getName()));
                         //return received string
                         return sb.toString();
+
+
+
+
                 }
 
             } catch (IOException e) {
@@ -209,31 +215,47 @@ public class LoginFragment extends BaseFragment {
 
 
         }
-        protected void onPostExecute(String  result2){
+        protected void onPostExecute(String  result2) {
 
             //if (result2 == null) checks this
-            result2 = result2.substring(0,result2.length()-1); //removing the null char
 
-            Log.i("isValid", result2);
+            JSONObject reader = null;
+            String isvalid = null;
+            String id = null;
+            try {
+                reader = new JSONObject(result2);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                isvalid = reader.getString("isValid");
+                id = reader.getString("id");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
 
-           if (result2.equals("invalid")){
+            result2 = result2.substring(0, result2.length() - 1); //removing the null char
 
-               Log.i("isValid", "Invalid");
-               Toast.makeText(getContext(), "Invalid Username or Password", Toast.LENGTH_SHORT).show();
+            Log.i("isValid", isvalid);
 
 
-           }
-           else if(result2.equals("Network Error")){
-               Log.i("isValid", "Network Error");
-               Toast.makeText(getContext(), "Network Error", Toast.LENGTH_SHORT).show();
+            if (isvalid.equals("invalid")) {
 
-           }
-            else{
+                Log.i("isValid", "Invalid");
+                Toast.makeText(getContext(), "Invalid Username or Password", Toast.LENGTH_SHORT).show();
 
-                Log.i("isValid", "Valid");
+
+            } else if (isvalid.equals("Network Error")) {
+                Log.i("isValid", "Network Error");
+                Toast.makeText(getContext(), "Network Error", Toast.LENGTH_SHORT).show();
+
+            } else {
+
+                Log.i("isValid", id);
                 Intent i = (new Intent(getActivity(), Main2Activity.class));
-                i.putExtra("id",result2);
+                i.putExtra("id", id);
                 startActivity(i);
             }
 
