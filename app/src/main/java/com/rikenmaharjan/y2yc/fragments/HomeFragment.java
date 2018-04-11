@@ -1,5 +1,6 @@
 package com.rikenmaharjan.y2yc.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -17,6 +18,8 @@ import android.widget.Toast;
 import com.rikenmaharjan.y2yc.R;
 import com.rikenmaharjan.y2yc.R2;
 import com.rikenmaharjan.y2yc.activities.HomeActivity;
+import com.rikenmaharjan.y2yc.activities.Main2Activity;
+import com.rikenmaharjan.y2yc.utils.SessionManager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -73,6 +76,14 @@ public class HomeFragment extends BaseFragment {
 
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+
+
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
 
@@ -82,6 +93,9 @@ public class HomeFragment extends BaseFragment {
             Log.e("inside_the_getarg","hey");
 
         }
+
+
+
 
 
 

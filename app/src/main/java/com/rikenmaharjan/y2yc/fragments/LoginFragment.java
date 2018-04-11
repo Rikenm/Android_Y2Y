@@ -15,22 +15,22 @@ import android.widget.Toast;
 
 import com.rikenmaharjan.y2yc.R;
 import com.rikenmaharjan.y2yc.R2;
-import com.rikenmaharjan.y2yc.activities.HomeActivity;
+
 import com.rikenmaharjan.y2yc.activities.Main2Activity;
-import com.rikenmaharjan.y2yc.utils.Constants;
+
+import com.rikenmaharjan.y2yc.utils.SessionManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
+
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
+
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
+
 import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -39,8 +39,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import io.socket.client.IO;
-import io.socket.client.Socket;
+
 
 /**
  * Created by Riken on 3/18/18.
@@ -51,7 +50,7 @@ public class LoginFragment extends BaseFragment {
 
     // using butterknife to make binding buttons easy.
 
-    //username is rikenm and password is "password123"
+    //username is rikenm and password is "password1234"
 
     @BindView(R2.id.fragment_login_userName)
     EditText mUSerNameEt;
@@ -63,6 +62,10 @@ public class LoginFragment extends BaseFragment {
     Button mLoginButton;
 
     private Unbinder mUnbinder;
+
+
+    // Session Manager Class
+    //SessionManager session;
 
 
     String response;
@@ -86,16 +89,14 @@ public class LoginFragment extends BaseFragment {
 
 
 
+        //session = new SessionManager(getActivity());
+        View rootView = inflater.inflate(R.layout.fragment_login,container,false);
+        mUnbinder = ButterKnife.bind(this,rootView);
 
-
-
-       View rootView = inflater.inflate(R.layout.fragment_login,container,false);
-       mUnbinder = ButterKnife.bind(this,rootView);
-
-       return rootView;
+        return rootView;
     }
 
-    //after you have homepage
+
     @OnClick(R2.id.fragment_login_register_button)
     public void setmLoginButton(){
 
@@ -117,6 +118,7 @@ public class LoginFragment extends BaseFragment {
 
     }
 
+    // derived from stackoverflow
 
     public class MyAsyncTaskgetNews extends AsyncTask<String, String, String> {
         @Override
@@ -135,16 +137,13 @@ public class LoginFragment extends BaseFragment {
 
 
             try {
-                //URL url = new URL("http://168.122.222.63:3000/login");  // for BU localhost
 
-                //URL url = new URL("http://192.168.0.38:3000/login"); // riken's house
-                //https://y2y.herokuapp.com/login  my heroku
                 URL url = new URL("https://y2y.herokuapp.com/login");
 
                 //URL url = new URL("http://155.41.34.62:3000/login"); //computerlab ip
 
 
-                //URL url = new URL("http://192.168.0.38:3000/login");  // home local host
+
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("POST");
                 //urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
@@ -224,11 +223,6 @@ public class LoginFragment extends BaseFragment {
             String id = null;
             try {
                 reader = new JSONObject(result2);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            try {
                 isvalid = reader.getString("isValid");
                 id = reader.getString("id");
             } catch (JSONException e) {
@@ -236,7 +230,13 @@ public class LoginFragment extends BaseFragment {
             }
 
 
-            result2 = result2.substring(0, result2.length() - 1); //removing the null char
+            //creating session
+            //session.createLoginSession(mUSerNameEt.getText().toString(), id);
+
+
+
+
+            //result2 = result2.substring(0, result2.length() - 1); //removing the null char
 
             Log.i("isValid", isvalid);
 

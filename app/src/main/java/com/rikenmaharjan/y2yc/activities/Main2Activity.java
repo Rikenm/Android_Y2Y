@@ -22,6 +22,7 @@ import com.rikenmaharjan.y2yc.R;
 import com.rikenmaharjan.y2yc.fragments.FeedBackSubmitFragment;
 import com.rikenmaharjan.y2yc.fragments.HomeFragment;
 import com.rikenmaharjan.y2yc.fragments.ViewLotteryResultFragment;
+import com.rikenmaharjan.y2yc.utils.SessionManager;
 
 public class Main2Activity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -33,6 +34,8 @@ public class Main2Activity extends AppCompatActivity
     private FragmentManager fm;
     private HomeFragment hm;
     public String sender;
+    public SessionManager session;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,19 +157,26 @@ public class Main2Activity extends AppCompatActivity
         //IF ITS THE FRAGMENT THEN RECEIVE DATA
         if(sender != null)
         {
-
+            session = new SessionManager(getApplicationContext());
             Toast.makeText(this, "Received", Toast.LENGTH_SHORT).show();
 
-            String data  = sender;
+
+
+            String id  = sender;
+
+
+            session.createLoginSession("Android Hive", id);
+
+
             Log.i("data",sender);
             Bundle args = new Bundle();
-            args.putString("id",data);
+            args.putString("id",id);
 
              fbsf.setArguments(args);
              vlrf.setArguments(args);
 
              hm.setArguments(args);
-            //fragInfo.putArguments(args);
+
 
 
 
