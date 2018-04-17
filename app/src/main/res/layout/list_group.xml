@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:padding="8dp">
 
 
@@ -10,25 +10,28 @@
         android:id="@+id/myListHeader"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="10"
         android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
-        android:textSize="17dp"/>
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textSize="18sp"/>
 
     <CheckBox
         android:id="@+id/checkBox1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:focusable="false"
+        android:layout_weight="0.5"
         android:checked="false"
-        android:theme="@android:style/Theme.Holo"/>
+        android:focusable="false"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:theme="?attr/checkboxStyle" />
 
     <CheckBox
         android:id="@+id/checkBox2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:focusable="false"
+        android:layout_weight="0.5"
         android:checked="false"
-        android:theme="@android:style/Theme.Holo.Light"/>
+        android:focusable="false"
+        android:theme="?attr/checkboxStyle" />
 
 </LinearLayout>

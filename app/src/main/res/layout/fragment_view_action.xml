@@ -26,21 +26,21 @@
         <Space
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="8" />
+            android:layout_weight="50" />
 
         <TextView
             android:id="@+id/txtcomplete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Complete?" />
+            android:text="Complete" />
 
         <TextView
             android:id="@+id/txtdrop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Drop?" />
+            android:text="Drop" />
     </LinearLayout>
 
     <LinearLayout

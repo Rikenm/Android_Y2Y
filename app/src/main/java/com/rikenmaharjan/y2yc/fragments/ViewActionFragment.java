@@ -230,10 +230,3 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
 
 
 }
-/*
-class GroupHolder {
-    ImageView checkbox_complete;
-    ImageView checkbox_drop;
-    TextView myListHeader;
-}
-*/
