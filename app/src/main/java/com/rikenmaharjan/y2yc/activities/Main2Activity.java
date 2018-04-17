@@ -174,10 +174,10 @@ public class Main2Activity extends AppCompatActivity
             Bundle args = new Bundle();
             args.putString("id",id);
 
-             fbsf.setArguments(args);
-             vlrf.setArguments(args);
+             //fbsf.setArguments(args);
+             //vlrf.setArguments(args);
 
-             hm.setArguments(args);
+             //hm.setArguments(args);
 
 
 

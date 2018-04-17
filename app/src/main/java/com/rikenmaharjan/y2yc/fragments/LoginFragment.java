@@ -261,10 +261,6 @@ public class LoginFragment extends BaseFragment {
 
 
         }
-
-
-
-
     }
 
 
@@ -278,6 +274,5 @@ public class LoginFragment extends BaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-
     }
 }
