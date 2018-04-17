@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.CheckBox;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
@@ -42,7 +43,9 @@ public class ViewActionFragment extends BaseFragment {
     List<String> Header;
     HashMap<String, List<String>> Child;
     TextView txtview;
-    //SparseArray<boolean[]> ChildCheckStates;
+    ArrayList<String> isCheckedStatus = new ArrayList<String>();
+    CheckBox checkBox1;
+    CheckBox checkBox2;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -97,7 +100,6 @@ public class ViewActionFragment extends BaseFragment {
     private void prepareListData() {
         Header = new ArrayList<String>();
         Child = new HashMap<String, List<String>>();
-        //ChildCheckStates = new SparseArray<boolean[]>();
 
         // Adding child data
         Header.add("Apply for housing");
@@ -143,6 +145,9 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
     Context context;
     List<String> Header;
     HashMap<String, List<String>> Child;
+    ArrayList<String> isCheckedStatus = new ArrayList<String>();
+    CheckBox checkBox1;
+    CheckBox checkBox2;
 
     public MyCustomAdapter(Context context, List<String> listDataHeader, HashMap<String, List<String>> listChildData) {
         this.context = context;
@@ -199,22 +204,14 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         String headerTitle = (String) getGroup(groupPosition);
-        //final GroupHolder groupHolder;
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.list_group, null);
         }
-/*
-        groupHolder = new GroupHolder();
-        groupHolder.checkbox_complete = (ImageView) convertView.findViewById(R.id.complete1);
-        groupHolder.checkbox_drop = (ImageView) convertView.findViewById(R.id.drop1);
-        groupHolder.myListHeader = (TextView)convertView.findViewById(R.id.myListHeader);
-        groupHolder.myListHeader.setTypeface(null, Typeface.BOLD);
-        groupHolder.myListHeader.setText(headerTitle);
 
-        convertView.setTag(groupHolder); */
-
-        TextView myListHeader = (TextView) convertView.findViewById(R.id.myListHeader);
+        TextView myListHeader = convertView.findViewById(R.id.myListHeader);
+        CheckBox checkBox1 = convertView.findViewById(R.id.checkBox1);
+        CheckBox checkBox2 = convertView.findViewById(R.id.checkBox2);
         myListHeader.setTypeface(null, Typeface.BOLD);
         myListHeader.setText(headerTitle);
 
