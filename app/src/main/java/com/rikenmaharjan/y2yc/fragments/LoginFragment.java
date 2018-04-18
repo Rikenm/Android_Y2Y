@@ -1,6 +1,7 @@
 package com.rikenmaharjan.y2yc.fragments;
 
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -63,12 +64,16 @@ public class LoginFragment extends BaseFragment {
 
     private Unbinder mUnbinder;
 
+    
+
 
     // Session Manager Class
     SessionManager session;
 
 
     String response;
+
+
 
     public static LoginFragment newInstance(){
         return new LoginFragment();
@@ -102,6 +107,7 @@ public class LoginFragment extends BaseFragment {
     public void setmLoginButton(){
 
         if (!(mUSerNameEt.getText().toString().equals(""))&&(!(mUSerPasswordEt.getText().toString().equals("")))) {
+            mLoginButton.setEnabled(false);
             new MyAsyncTaskgetNews().execute("hello", "hello", "hello");
         }
         else if (mUSerNameEt.getText().toString().equals("")){
@@ -207,12 +213,12 @@ public class LoginFragment extends BaseFragment {
         }
         protected void onProgressUpdate(String... progress) {
 
-            try {
-                //display response data
 
 
-            } catch (Exception ex) {
-            }
+
+
+
+
 
 
         }
@@ -250,13 +256,18 @@ public class LoginFragment extends BaseFragment {
 
                 Log.i("isValid", "Invalid");
                 Toast.makeText(getContext(), "Invalid Username or Password", Toast.LENGTH_SHORT).show();
+                mLoginButton.setEnabled(true);
 
 
             } else if (isvalid.equals("Network Error")) {
                 Log.i("isValid", "Network Error");
                 Toast.makeText(getContext(), "Network Error", Toast.LENGTH_SHORT).show();
+                mLoginButton.setEnabled(true);
 
             } else {
+
+
+
 
                 Log.i("isValid", id);
                 Intent i = (new Intent(getActivity(), Main2Activity.class));

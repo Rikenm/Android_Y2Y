@@ -76,23 +76,7 @@ public class HomeFragment extends BaseFragment {
         View rootView = inflater.inflate(R.layout.fragment_home,container,false);
         mUnbinder = ButterKnife.bind(this,rootView);
 
-        session = new SessionManager(getContext());
 
-        session.checkLogin();
-
-
-
-
-        // get user data from session
-        HashMap<String, String> user = session.getUserDetails();
-
-        // name
-        name = user.get(SessionManager.KEY_NAME);
-
-        // email
-        id = user.get(SessionManager.KEY_ID);
-
-        //Log.d("session",session.checkLogin());
 
 
 
@@ -145,6 +129,8 @@ public class HomeFragment extends BaseFragment {
 
         // email
         id = user.get(SessionManager.KEY_ID);
+
+        introTxt.setText("Hello, "+name);
 
 
 
