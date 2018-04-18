@@ -65,7 +65,7 @@ public class LoginFragment extends BaseFragment {
 
 
     // Session Manager Class
-    //SessionManager session;
+    SessionManager session;
 
 
     String response;
@@ -73,6 +73,7 @@ public class LoginFragment extends BaseFragment {
     public static LoginFragment newInstance(){
         return new LoginFragment();
     }
+
 
 
     @Override
@@ -89,7 +90,7 @@ public class LoginFragment extends BaseFragment {
 
 
 
-        //session = new SessionManager(getActivity());
+        session = new SessionManager(getContext());
         View rootView = inflater.inflate(R.layout.fragment_login,container,false);
         mUnbinder = ButterKnife.bind(this,rootView);
 
@@ -133,6 +134,7 @@ public class LoginFragment extends BaseFragment {
             String json =  "{\"username\": \""+mUSerNameEt.getText().toString()+"\",\"password\":\""+mUSerPasswordEt.getText().toString()+"\"}";
             HttpURLConnection urlConnection = null;
             response = new String();
+
 
 
 
@@ -234,7 +236,7 @@ public class LoginFragment extends BaseFragment {
 
 
             //creating session
-            //session.createLoginSession(mUSerNameEt.getText().toString(), id);
+            session.createLoginSession(name, id);
 
 
 

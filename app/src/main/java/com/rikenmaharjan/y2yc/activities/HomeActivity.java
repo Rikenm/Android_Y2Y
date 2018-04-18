@@ -12,7 +12,7 @@ import com.rikenmaharjan.y2yc.fragments.HomeFragment;
  * Created by Riken on 3/18/18.
  */
 
-public class HomeActivity extends BaseFragmentActivity {
+/** public class HomeActivity extends BaseFragmentActivity {
 
 
 
@@ -56,3 +56,4 @@ public class HomeActivity extends BaseFragmentActivity {
 
     }
 }
+**/

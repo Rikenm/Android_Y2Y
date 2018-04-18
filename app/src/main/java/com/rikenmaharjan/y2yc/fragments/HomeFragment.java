@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import com.rikenmaharjan.y2yc.R;
 import com.rikenmaharjan.y2yc.R2;
-import com.rikenmaharjan.y2yc.activities.HomeActivity;
+//import com.rikenmaharjan.y2yc.activities.HomeActivity;
 import com.rikenmaharjan.y2yc.activities.Main2Activity;
 import com.rikenmaharjan.y2yc.utils.SessionManager;
 
@@ -28,6 +28,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -65,6 +66,7 @@ public class HomeFragment extends BaseFragment {
 
     String id;
     String name;
+    SessionManager session;
 
 
 
@@ -74,7 +76,23 @@ public class HomeFragment extends BaseFragment {
         View rootView = inflater.inflate(R.layout.fragment_home,container,false);
         mUnbinder = ButterKnife.bind(this,rootView);
 
+        session = new SessionManager(getContext());
 
+        session.checkLogin();
+
+
+
+
+        // get user data from session
+        HashMap<String, String> user = session.getUserDetails();
+
+        // name
+        String name = user.get(SessionManager.KEY_NAME);
+
+        // email
+        String email = user.get(SessionManager.KEY_ID);
+
+        //Log.d("session",session.checkLogin());
 
 
 
@@ -95,6 +113,9 @@ public class HomeFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+
+
+
 
         if (getArguments()!=null){
 

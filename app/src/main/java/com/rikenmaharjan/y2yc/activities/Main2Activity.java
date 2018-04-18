@@ -44,17 +44,21 @@ public class Main2Activity extends AppCompatActivity
         setContentView(R.layout.activity_main2);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        session = new SessionManager(getApplicationContext());
+        //get all name and id here
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+
+                session.logoutUser();
+
             }
         });
 
-        constraintLayout = (ConstraintLayout) findViewById(R.id.constraintLayout);
+
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -151,7 +155,7 @@ public class Main2Activity extends AppCompatActivity
         return true;
     }
 
-    protected void onResume() {
+   /* protected void onResume() {
         super.onResume();
 
 
@@ -189,7 +193,7 @@ public class Main2Activity extends AppCompatActivity
 
         }
     }
-
+    */
 
 
 }
