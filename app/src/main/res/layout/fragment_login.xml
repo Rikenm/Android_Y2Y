@@ -36,7 +36,7 @@
             android:layout_marginTop="50dp"
             android:layout_weight="1"
             android:text="Username"
-            android:textColor="#FF199DD8"
+            android:textColor="@android:color/white"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -62,7 +62,7 @@
             android:layout_marginTop="50dp"
             android:layout_weight="1"
             android:text="Password"
-            android:textColor="#FF199DD8"
+            android:textColor="@android:color/white"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -84,7 +84,7 @@
         android:layout_marginBottom="100dp"
         android:layout_marginTop="20dp"
         android:layout_weight="0.5"
-        android:background="#199DD8"
+        android:background="@android:color/white"
         android:hint="Sign In"
         android:textAllCaps="false"
         android:textColor="#FFFFFF"

@@ -15,7 +15,8 @@
         <activity
             android:name=".activities.LoginActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/my_theme">
+
+            android:theme="@style/AppTheme.NoActionBar">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,7 +30,8 @@
             android:name=".activities.Main2Activity"
             android:label="Y2Y"
             android:screenOrientation="portrait"
-            android:theme="@style/my_theme">
+
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

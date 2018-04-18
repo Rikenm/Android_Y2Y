@@ -5,6 +5,9 @@
     android:layout_width="match_parent"
     tools:context="fragments.HomeFragment"
     android:layout_height="match_parent"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
+    android:paddingBottom="8dp"
     xmlns:tools="http://schemas.android.com/tools">
 
 
@@ -14,32 +17,35 @@
        android:orientation="vertical"
        >
 
-    <TextView
-        android:id="@+id/fragment_home_introEt"
+       <TextView
+           android:id="@+id/fragment_home_introEt"
 
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="25dp"
-        android:layout_weight="2"
-        android:text="Hello, Rikenm!  "
-        android:textAlignment="center"
-        android:textSize="18sp" />
+           android:layout_width="match_parent"
+           android:layout_height="0dp"
+           android:layout_marginTop="25dp"
+           android:layout_weight="2"
+           android:text="Hello, Rikenm!  "
+           android:textAlignment="center"
+           android:textColor="@android:color/white"
+           android:textSize="18sp" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        android:text="Reminder:"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+       <TextView
+           android:layout_width="match_parent"
+           android:layout_height="0dp"
+           android:layout_weight="2"
+           android:text="Reminder:"
+           android:textColor="@android:color/white"
+           android:textSize="24sp"
+           android:textStyle="bold" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:text="How are you feeling today?"
-        android:textAlignment="center"
-        android:textSize="20sp" />
+       <TextView
+           android:layout_width="match_parent"
+           android:layout_height="0dp"
+           android:layout_weight="1"
+           android:text="How are you feeling today?"
+           android:textAlignment="center"
+           android:textColor="@android:color/white"
+           android:textSize="20sp" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -102,22 +108,23 @@
     </LinearLayout>
 
 
+       <TextView
+           android:layout_width="match_parent"
+           android:layout_height="0dp"
+           android:layout_weight="1"
+           android:text="Do you have any comments today?"
+           android:textAlignment="center"
+           android:textColor="@android:color/white"
+           android:textSize="18sp" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:text="Do you have any comments today?"
-        android:textAlignment="center"
-        android:textSize="18sp" />
-
-    <EditText
-        android:id="@+id/fragment_home_commentEt"
-        android:layout_width="200dp"
-        android:layout_height="0dp"
-        android:layout_marginLeft="80dp"
-        android:layout_weight="3"
-        android:textStyle="bold" />
+       <EditText
+           android:id="@+id/fragment_home_commentEt"
+           android:layout_width="200dp"
+           android:layout_height="0dp"
+           android:layout_marginLeft="80dp"
+           android:layout_weight="3"
+           android:textColor="@android:color/white"
+           android:textStyle="bold" />
 
     <Button
         android:id="@+id/fragment_home_btnsave"

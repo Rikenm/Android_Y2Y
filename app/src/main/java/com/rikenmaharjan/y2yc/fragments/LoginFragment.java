@@ -64,7 +64,7 @@ public class LoginFragment extends BaseFragment {
 
     private Unbinder mUnbinder;
 
-    
+
 
 
     // Session Manager Class
