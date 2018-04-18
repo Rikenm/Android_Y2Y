@@ -87,10 +87,10 @@ public class HomeFragment extends BaseFragment {
         HashMap<String, String> user = session.getUserDetails();
 
         // name
-        String name = user.get(SessionManager.KEY_NAME);
+        name = user.get(SessionManager.KEY_NAME);
 
         // email
-        String email = user.get(SessionManager.KEY_ID);
+        id = user.get(SessionManager.KEY_ID);
 
         //Log.d("session",session.checkLogin());
 
@@ -117,7 +117,7 @@ public class HomeFragment extends BaseFragment {
 
 
 
-        if (getArguments()!=null){
+       /* if (getArguments()!=null){
 
             id = getArguments().getString("id"); //gives me null why??????
             name = getArguments().getString("name");
@@ -128,7 +128,23 @@ public class HomeFragment extends BaseFragment {
 
 
 
-        }
+        } */
+
+        session = new SessionManager(getContext());
+
+        session.checkLogin();
+
+
+
+
+        // get user data from session
+        HashMap<String, String> user = session.getUserDetails();
+
+        // name
+        name = user.get(SessionManager.KEY_NAME);
+
+        // email
+        id = user.get(SessionManager.KEY_ID);
 
 
 
@@ -175,6 +191,9 @@ public class HomeFragment extends BaseFragment {
         }
         else{
             Log.i("hell0","enter");
+
+
+
             //Log.i("Id",id);
 
             new HomeFragment.MyAsyncTaskget().execute(id, "hello", "hello");
