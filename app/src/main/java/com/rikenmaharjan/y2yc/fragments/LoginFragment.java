@@ -221,10 +221,13 @@ public class LoginFragment extends BaseFragment {
             JSONObject reader = null;
             String isvalid = null;
             String id = null;
+            String name = null;
             try {
                 reader = new JSONObject(result2);
                 isvalid = reader.getString("isValid");
                 id = reader.getString("id");
+                name = reader.getString("name");
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -256,6 +259,8 @@ public class LoginFragment extends BaseFragment {
                 Log.i("isValid", id);
                 Intent i = (new Intent(getActivity(), Main2Activity.class));
                 i.putExtra("id", id);
+                i.putExtra("name",name);
+
                 startActivity(i);
             }
 

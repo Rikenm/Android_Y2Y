@@ -49,7 +49,7 @@ public class ViewLotteryResultFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_view_lottery_result, container, false);
+        final View view =  inflater.inflate(R.layout.fragment_view_lottery_result, container, false);
         date1 = (TextView) view.findViewById(R.id.date1);
         date2 = (TextView) view.findViewById(R.id.date2);
         longTermLottery = (TextView) view.findViewById(R.id.longTermLottery);
@@ -71,6 +71,7 @@ public class ViewLotteryResultFragment extends Fragment {
                 Log.i("request sucessful", response );
                 try{
                     JSONObject apiResult = new JSONObject(response);
+                    view.findViewById(R.id.loadingPanel).setVisibility(View.GONE);
                     eBedLottery.setText(apiResult.getString("e-bed"));
                     longTermLottery.setText(apiResult.getString("Long Term"));
                 }

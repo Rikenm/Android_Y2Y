@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rikenmaharjan.y2yc.R;
@@ -54,12 +55,16 @@ public class HomeFragment extends BaseFragment {
     @BindView(R2.id.fragment_home_btnrating1)
     Button mRate1Button;
 
+    @BindView(R2.id.fragment_home_introEt)
+    TextView introTxt;
+
 
     String response;
 
     private Unbinder mUnbinder;
 
     String id;
+    String name;
 
 
 
@@ -68,6 +73,10 @@ public class HomeFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home,container,false);
         mUnbinder = ButterKnife.bind(this,rootView);
+
+
+
+
 
 
 
@@ -90,7 +99,13 @@ public class HomeFragment extends BaseFragment {
         if (getArguments()!=null){
 
             id = getArguments().getString("id"); //gives me null why??????
-            Log.e("inside_the_getarg","hey");
+            name = getArguments().getString("name");
+
+            Log.e("name",name);
+
+            introTxt.setText("Hello, "+name);
+
+
 
         }
 

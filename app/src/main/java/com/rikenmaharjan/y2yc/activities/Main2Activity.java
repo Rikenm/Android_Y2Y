@@ -34,6 +34,7 @@ public class Main2Activity extends AppCompatActivity
     private FragmentManager fm;
     private HomeFragment hm;
     public String sender;
+    public String name;
     public SessionManager session;
 
 
@@ -154,7 +155,9 @@ public class Main2Activity extends AppCompatActivity
         super.onResume();
 
 
-        sender=this.getIntent().getExtras().getString("id");
+        sender = this.getIntent().getExtras().getString("id");
+        name  = this.getIntent().getExtras().getString("name");
+
 
         //IF ITS THE FRAGMENT THEN RECEIVE DATA
         if(sender != null)
@@ -173,6 +176,8 @@ public class Main2Activity extends AppCompatActivity
             Log.i("data",sender);
             Bundle args = new Bundle();
             args.putString("id",id);
+            args.putString("name",name);
+
 
              fbsf.setArguments(args);
              vlrf.setArguments(args);

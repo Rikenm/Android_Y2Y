@@ -34,8 +34,28 @@ public class FeedBackSubmitFragment extends Fragment {
 
     private EditText feedBack;
     private Button feedBackSubmit;
+    String id = new String();
 
     public FeedBackSubmitFragment(){}
+
+
+    public void onResume() {
+        super.onResume();
+
+        if (getArguments()!=null){
+
+            id = getArguments().getString("id"); //gives me null why??????
+            Log.e("inside_the_getarg",id);
+
+        }
+
+
+
+
+
+
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -119,4 +139,7 @@ public class FeedBackSubmitFragment extends Fragment {
         return view;
 
     }
+
+
+
 }
