@@ -2,30 +2,56 @@ package com.rikenmaharjan.y2yc.fragments;
 
 import android.content.Context;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.SparseArray;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.ImageView;
+import android.widget.CompoundButton;
 import android.widget.Toast;
+import android.widget.Button;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.ExpandableListView.OnGroupCollapseListener;
 import android.widget.ExpandableListView.OnGroupExpandListener;
 import android.graphics.Typeface;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import com.rikenmaharjan.y2yc.R;
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 // FOLLOWED THIS TUTORIAL: https://www.androidhive.info/2013/07/android-expandable-list-view-tutorial/
 // And referenced this: http://helloiamandroid.blogspot.com/2012/11/hello-android-developers_29.html
@@ -43,14 +69,12 @@ public class ViewActionFragment extends BaseFragment {
     List<String> Header;
     HashMap<String, List<String>> Child;
     TextView txtview;
-    ArrayList<String> isCheckedStatus = new ArrayList<String>();
-    CheckBox checkBox1;
-    CheckBox checkBox2;
+    public final List<Boolean[]> childCheckbox = new ArrayList<>();
+    public final List<String[]> action_item_ids = new ArrayList<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Nullable
@@ -97,45 +121,71 @@ public class ViewActionFragment extends BaseFragment {
         return rootView;
     }
 
-    private void prepareListData() {
+    public void prepareListData() {
         Header = new ArrayList<String>();
         Child = new HashMap<String, List<String>>();
 
-        // Adding child data
-        Header.add("Apply for housing");
-        Header.add("Get a replacement Mass ID");
-        Header.add("Complete resume");
-        Header.add("Get new glasses");
+        RequestQueue queue = Volley.newRequestQueue(getActivity());
+        String url = "https://y2y.herokuapp.com/actionitems";
 
-        // Adding child data
-        List<String> action1 = new ArrayList<String>();
-        action1.add("step 1");
-        action1.add("step 2");
-        action1.add("step 3");
-        action1.add("step 4");
 
-        List<String> action2 = new ArrayList<String>();
-        action2.add("step 1");
-        action2.add("step 2");
-        action2.add("step 3");
-        action2.add("step 4");
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.i("request successful", response );
+                try{
+                    JSONObject apiResult = new JSONObject(response);
+                    int num_action_items;
+                    int num_steps;
+                    List<String[]> childList = new ArrayList<>();
+                    num_action_items = Integer.parseInt(apiResult.getString("size"));
+                    JSONArray my_action_items = apiResult.getJSONArray("records");
+                    for (int i = 0; i < num_action_items; i++) {
+                        Header.add(my_action_items.getJSONObject(i).getString("name"));
+                        num_steps = Integer.parseInt(my_action_items.getJSONObject(i).getString("numb_of_step"));
+                        String[] steps = new String[num_steps];
+                        Boolean[] checkboxList = new Boolean[num_steps];
+                        String[] step_item_ids = new String[num_steps];
+                        String current_action_id = my_action_items.getJSONObject(i).getString("id");
+                        JSONObject current_action = apiResult.getJSONObject(current_action_id);
+                        for (int j = 0; j < num_steps; j++) {
+                            steps[j] = (current_action.getString(Integer.toString(j+1)));
+                            step_item_ids[j] = current_action.getString("step_id"+Integer.toString(j+1));
+                            String temp = (current_action.getString("completed"+Integer.toString(j+1)));
+                            if (temp == "false")
+                                checkboxList[j] = false;
+                            else if (temp == "true")
+                                checkboxList[j] = true;
+                        }
+                        childList.add(steps);
+                        childCheckbox.add(checkboxList);
+                        action_item_ids.add(step_item_ids);
+                        List<String> temp = Arrays.asList(childList.get(i));
+                        Child.put(Header.get(i), temp);
+                    }
+                }
+                catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
-        List<String> action3 = new ArrayList<String>();
-        action3.add("step 1");
-        action3.add("step 2");
-        action3.add("step 3");
-        action3.add("step 4");
+            }
+        }, new Response.ErrorListener(){
+            @Override
+            public void onErrorResponse(VolleyError error){
+                Log.i("request failed", "failed");
+            }
+        });
 
-        List<String> action4 = new ArrayList<String>();
-        action4.add("step 1");
-        action4.add("step 2");
-        action4.add("step 3");
-        action4.add("step 4");
+        queue.add(stringRequest);
+        Log.i("result",queue.toString());
+    }
 
-        Child.put(Header.get(0), action1); // Header, Child data
-        Child.put(Header.get(1), action2);
-        Child.put(Header.get(2), action3);
-        Child.put(Header.get(3), action4);
+    public List<Boolean[]> childCheckboxData() {
+        return childCheckbox;
+    }
+
+    public List<String[]> action_item_ids_Data() {
+        return action_item_ids;
     }
 }
 
@@ -145,9 +195,8 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
     Context context;
     List<String> Header;
     HashMap<String, List<String>> Child;
-    ArrayList<String> isCheckedStatus = new ArrayList<String>();
-    CheckBox checkBox1;
-    CheckBox checkBox2;
+    HashMap<String, List<String>> completed_steps;
+    final ViewActionFragment frag = new ViewActionFragment();
 
     public MyCustomAdapter(Context context, List<String> listDataHeader, HashMap<String, List<String>> listChildData) {
         this.context = context;
@@ -166,19 +215,94 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getChildView(int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+    public boolean hasStableIds() {
+        return false;
+    }
+
+    @Override
+    public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 
         final String childText = (String) getChild(groupPosition, childPosition);
 
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.fragment_view_action, null);
+            LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.list_item, null);
         }
-
+        final List<Boolean[]> childCheckCheckbox = frag.childCheckboxData();
+        final List<String[]> action_item_ids = frag.action_item_ids_Data();
         TextView txtListChild = convertView.findViewById(R.id.myListItem);
-
+        CheckBox checkBox3 = convertView.findViewById(R.id.checkBox3);
+        CheckBox checkBox4 = convertView.findViewById(R.id.checkBox4);
+        final EditText reason = convertView.findViewById(R.id.action_reason);
+        final Button save_reason = convertView.findViewById(R.id.btnreason);
         txtListChild.setText(childText);
+        checkBox3.setChecked(childCheckCheckbox.get(groupPosition)[childPosition]);
+        checkBox4.setChecked(false);
+
+        checkBox3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton complete, boolean isChecked) {
+                if (complete.isChecked()) {
+                    reason.setVisibility(View.VISIBLE);
+                    save_reason.setVisibility(View.VISIBLE);
+                    while (complete.isChecked() & reason.getText() == null) {
+                        Toast.makeText(frag.getActivity().getApplicationContext(), "Please explain your action in the comment box below.", Toast.LENGTH_LONG).show();
+                    }
+                    save_reason.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                            final RequestQueue queue = Volley.newRequestQueue(frag.getActivity().getApplicationContext());
+
+                            String url = "https://y2y.herokuapp.com/actionitemstep";
+
+                            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    Log.i("request successful", response);
+                                    try {
+                                        JSONObject jo = new JSONObject();
+                                        String current_action_id = action_item_ids.get(groupPosition).toString();
+                                        String current_step_id = action_item_ids.get(groupPosition)[childPosition];
+                                        List<String> current_record = completed_steps.get(current_action_id);
+                                        current_record.add(current_step_id);
+                                        completed_steps.put(current_action_id, current_record);
+                                        JSONArray newrecords = new JSONArray(current_record);
+                                        jo.put("size", current_record.size());
+                                        jo.put("comment", reason.getText().toString());
+                                        jo.putOpt("records", newrecords);
+                                        jo.put("actionid", current_action_id);
+
+                                        Toast.makeText(frag.getActivity().getApplicationContext(), "Information Saved", Toast.LENGTH_SHORT).show();
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                }
+                            }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Log.i("request failed", "failed");
+                                }
+                            });
+
+                            queue.add(stringRequest);
+                            Log.i("result", queue.toString());
+                        }
+                    });
+                    reason.setText(null);
+                    reason.setVisibility(View.INVISIBLE);
+                    save_reason.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
         return convertView;
+    }
+
+    @Override
+    public boolean isChildSelectable(int i, int i1) {
+        return false;
     }
 
     @Override
@@ -202,31 +326,123 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+    public View getGroupView(final int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         String headerTitle = (String) getGroup(groupPosition);
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.list_group, null);
+
+            TextView myListHeader = convertView.findViewById(R.id.myListHeader);
+            CheckBox checkBox1 = convertView.findViewById(R.id.checkBox1);
+            CheckBox checkBox2 = convertView.findViewById(R.id.checkBox2);
+            final EditText reason = convertView.findViewById(R.id.action_reason);
+            final Button save_reason = convertView.findViewById(R.id.btnreason);
+            myListHeader.setTypeface(null, Typeface.BOLD);
+            myListHeader.setText(headerTitle);
+
+            checkBox1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton complete, boolean isChecked) {
+                    if (complete.isChecked()) {
+                        reason.setVisibility(View.VISIBLE);
+                        save_reason.setVisibility(View.VISIBLE);
+                        while (complete.isChecked() & reason.getText() == null) {
+                            Toast.makeText(frag.getActivity().getApplicationContext(), "Please explain your action in the comment box below.", Toast.LENGTH_LONG).show();
+                        }
+                        save_reason.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+
+                                RequestQueue queue = Volley.newRequestQueue(frag.getActivity().getApplicationContext());
+                                String url = "https://y2y.herokuapp.com/actionitems";
+
+                                StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+                                    @Override
+                                    public void onResponse(String response) {
+                                        Log.i("request successful", response);
+                                        try {
+                                            JSONObject apiResult = new JSONObject(response);
+                                            JSONArray my_action_items = apiResult.getJSONArray("records");
+                                            String current_action_id = my_action_items.getJSONObject(groupPosition).getString("id");
+                                            completed_steps.put(current_action_id, null);
+                                            JSONObject jo = new JSONObject();
+                                            jo.put("flag", "Completed");
+                                            jo.put("actionid", current_action_id);
+                                            jo.put("comment", reason.getText().toString());
+                                            Toast.makeText(frag.getActivity().getApplicationContext(), "Information Saved", Toast.LENGTH_SHORT).show();
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                    }
+                                }, new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Log.i("request failed", "failed");
+                                    }
+                                });
+                                queue.add(stringRequest);
+                                Log.i("result", queue.toString());
+                            }
+                        });
+                        reason.setText(null);
+                        reason.setVisibility(View.INVISIBLE);
+                        save_reason.setVisibility(View.INVISIBLE);
+                    }
+                }
+            });
+
+            checkBox2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton drop, boolean isChecked) {
+                    if (drop.isChecked()) {
+                        reason.setVisibility(View.VISIBLE);
+                        save_reason.setVisibility(View.VISIBLE);
+                        while (drop.isChecked() & reason.getText() == null) {
+                            Toast.makeText(frag.getActivity().getApplicationContext(), "Please explain your action in the comment box below.", Toast.LENGTH_LONG).show();
+                        }
+                        save_reason.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+
+                                RequestQueue queue = Volley.newRequestQueue(frag.getActivity().getApplicationContext());
+                                String url = "https://y2y.herokuapp.com/actionitems";
+
+                                StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+                                    @Override
+                                    public void onResponse(String response) {
+                                        Log.i("request successful", response);
+                                        try {
+                                            JSONObject apiResult = new JSONObject(response);
+                                            JSONArray my_action_items = apiResult.getJSONArray("records");
+                                            String current_action_id = my_action_items.getJSONObject(groupPosition).getString("id");
+                                            JSONObject jo = new JSONObject();
+                                            jo.put("flag", "Dropped");
+                                            jo.put("actionid", current_action_id);
+                                            jo.put("comment", reason.getText().toString());
+                                            Toast.makeText(frag.getActivity().getApplicationContext(), "Information Saved", Toast.LENGTH_SHORT).show();
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                    }
+                                }, new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Log.i("request failed", "failed");
+                                    }
+                                });
+                                queue.add(stringRequest);
+                                Log.i("result", queue.toString());
+                            }
+                        });
+                        reason.setText(null);
+                        reason.setVisibility(View.INVISIBLE);
+                        save_reason.setVisibility(View.INVISIBLE);
+                    }
+                }
+            });
         }
-
-        TextView myListHeader = convertView.findViewById(R.id.myListHeader);
-        CheckBox checkBox1 = convertView.findViewById(R.id.checkBox1);
-        CheckBox checkBox2 = convertView.findViewById(R.id.checkBox2);
-        myListHeader.setTypeface(null, Typeface.BOLD);
-        myListHeader.setText(headerTitle);
-
         return convertView;
     }
-
-    @Override
-    public boolean hasStableIds() {
-        return false;
-    }
-
-    @Override
-    public boolean isChildSelectable(int groupPosition, int childPosition) {
-        return true;
-    }
-
-
 }
