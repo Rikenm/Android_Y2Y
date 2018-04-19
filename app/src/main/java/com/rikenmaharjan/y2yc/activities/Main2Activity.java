@@ -45,13 +45,17 @@ public class Main2Activity extends AppCompatActivity
         setContentView(R.layout.activity_main2);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        session = new SessionManager(getApplicationContext());
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+
+
+                session.logoutUser();
+
             }
         });
 
@@ -163,35 +167,8 @@ public class Main2Activity extends AppCompatActivity
         super.onResume();
 
 
-        sender=this.getIntent().getExtras().getString("id");
-
-        //IF ITS THE FRAGMENT THEN RECEIVE DATA
-        if(sender != null)
-        {
-            session = new SessionManager(getApplicationContext());
-            Toast.makeText(this, "Received", Toast.LENGTH_SHORT).show();
 
 
-
-            String id  = sender;
-
-
-            session.createLoginSession("Android Hive", id);
-
-
-            Log.i("data",sender);
-            Bundle args = new Bundle();
-            args.putString("id",id);
-
-             //fbsf.setArguments(args);
-             //vlrf.setArguments(args);
-            sf.setArguments(args);
-             //hm.setArguments(args);
-
-
-
-
-        }
     }
 
 

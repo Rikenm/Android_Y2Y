@@ -15,9 +15,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.rikenmaharjan.y2yc.R;
+import com.rikenmaharjan.y2yc.utils.SessionManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
 
 import butterknife.ButterKnife;
 
@@ -33,6 +36,8 @@ public class StoryFragment extends BaseFragment {
     private TextView txtMajor;
     private TextView txtDayR;
     private String id;
+    private String name;
+
 
 
     public static StoryFragment newInstance(){
@@ -48,10 +53,26 @@ public class StoryFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_story,container,false);
+        final View view = inflater.inflate(R.layout.fragment_story,container,false);
 
-        Bundle bundle = getArguments();
-        id = bundle.getString("id");
+        SessionManager session = new SessionManager(getContext());
+
+        session.checkLogin();
+
+
+
+
+        // get user data from session
+        HashMap<String, String> user = session.getUserDetails();
+
+        // name
+        name = user.get(SessionManager.KEY_NAME);
+
+        // email
+        id = user.get(SessionManager.KEY_ID);
+
+
+
 
         txtBedR = (TextView) view.findViewById(R.id.txtBedR);
         txtDayR = (TextView) view.findViewById(R.id.txtDayR);
@@ -69,6 +90,7 @@ public class StoryFragment extends BaseFragment {
                 Log.i("request sucessful", response );
                 try{
                     JSONObject apiResult = new JSONObject(response);
+                    view.findViewById(R.id.loadingPanel).setVisibility(View.GONE);
                     txtBedR.setText(apiResult.getString("Bed_name"));
                     txtDayR.setText(apiResult.getString("Last_Day_Of_Stay"));
                     txtLockerR.setText(apiResult.getString("Locker"));
