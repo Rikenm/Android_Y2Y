@@ -2,9 +2,6 @@ package com.rikenmaharjan.y2yc.activities;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -19,13 +16,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.rikenmaharjan.y2yc.R;
 import com.rikenmaharjan.y2yc.fragments.FeedBackSubmitFragment;
 import com.rikenmaharjan.y2yc.fragments.HomeFragment;
+import com.rikenmaharjan.y2yc.fragments.StoryFragment;
 import com.rikenmaharjan.y2yc.fragments.ViewLotteryResultFragment;
 import com.rikenmaharjan.y2yc.utils.SessionManager;
 
@@ -36,61 +32,30 @@ public class Main2Activity extends AppCompatActivity
     private ConstraintLayout constraintLayout;
     private FeedBackSubmitFragment fbsf;
     private ViewLotteryResultFragment vlrf;
+    private StoryFragment sf;
     private FragmentManager fm;
     private HomeFragment hm;
     public String sender;
-    public String name;
     public SessionManager session;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
-
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setBackgroundColor(Color.TRANSPARENT);
-
         setSupportActionBar(toolbar);
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setElevation(0);
-
-
-
-        // Status bar :: Transparent
-        Window window = this.getWindow();
-
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-        {
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.setStatusBarColor(Color.TRANSPARENT);
-        }
-
-
-
-
-
-        setSupportActionBar(toolbar);
-        session = new SessionManager(getApplicationContext());
-        //get all name and id here
-
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                session.logoutUser();
-
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
             }
         });
 
-
+        constraintLayout = (ConstraintLayout) findViewById(R.id.constraintLayout);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -102,6 +67,7 @@ public class Main2Activity extends AppCompatActivity
 
         fbsf = new FeedBackSubmitFragment();
         vlrf = new ViewLotteryResultFragment();
+        sf = new StoryFragment();
         hm = new HomeFragment();
 
         fm = getFragmentManager();
@@ -151,8 +117,6 @@ public class Main2Activity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-
-
         if (id == R.id.nav_camera) {
             if (vlrf == null)
                 vlrf = new ViewLotteryResultFragment();
@@ -173,6 +137,14 @@ public class Main2Activity extends AppCompatActivity
 
 
         } else if (id == R.id.nav_slideshow) {
+            if (sf == null)
+                sf = new StoryFragment();
+
+            FragmentTransaction ft = fm.beginTransaction ();  //Create a reference to a fragment transaction.
+            ft.replace(R.id.constraintLayout, sf);
+            ft.addToBackStack ("myFrag2");  //why do we do this?
+            ft.commit();
+
 
         } else if (id == R.id.nav_manage) {
 
@@ -187,13 +159,11 @@ public class Main2Activity extends AppCompatActivity
         return true;
     }
 
-   /* protected void onResume() {
+    protected void onResume() {
         super.onResume();
 
 
-        sender = this.getIntent().getExtras().getString("id");
-        name  = this.getIntent().getExtras().getString("name");
-
+        sender=this.getIntent().getExtras().getString("id");
 
         //IF ITS THE FRAGMENT THEN RECEIVE DATA
         if(sender != null)
@@ -212,20 +182,18 @@ public class Main2Activity extends AppCompatActivity
             Log.i("data",sender);
             Bundle args = new Bundle();
             args.putString("id",id);
-            args.putString("name",name);
 
-
-             fbsf.setArguments(args);
-             vlrf.setArguments(args);
-
-             hm.setArguments(args);
+             //fbsf.setArguments(args);
+             //vlrf.setArguments(args);
+            sf.setArguments(args);
+             //hm.setArguments(args);
 
 
 
 
         }
     }
-    */
+
 
 
 }

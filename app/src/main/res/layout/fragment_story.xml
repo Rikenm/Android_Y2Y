@@ -7,26 +7,28 @@
 
 
     <LinearLayout
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="60dp"
         android:layout_marginLeft="30dp"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-
+            android:id="@+id/txtBed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Bed:"
             android:textSize="24sp" />
 
         <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:id="@+id/txtBedR"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
             android:layout_weight="5"
-            android:text="POD A ,Upper Left"
+            android:text=""
             android:textSize="24sp"
             android:textStyle="bold" />
 
@@ -36,26 +38,26 @@
     <LinearLayout
         android:layout_marginTop="30dp"
         android:layout_marginLeft="30dp"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="horizontal">
 
 
         <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-
-            android:layout_weight="1.0"
+            android:id="@+id/txtDay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="Last Day of Stay: "
             android:textSize="24sp" />
 
         <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-
+            android:id="@+id/txtDayR"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="1/20/2018 "
+            android:text=""
             android:textSize="24sp"
             android:textStyle="bold" />
 
@@ -70,9 +72,9 @@
         android:layout_marginLeft="30dp">
 
         <TextView
+            android:id="@+id/txtWarn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-
             android:layout_weight="0.8"
             android:text="# of Warnings:"
             android:textSize="24sp" />
@@ -84,22 +86,22 @@
             android:orientation="vertical"
             >
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-
-            android:layout_weight="1.0"
-            android:text="1 Major"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/txtMajor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:text=""
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
 
             <TextView
+                android:id="@+id/txtMinor"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-
+                android:layout_height="wrap_content"
                 android:layout_weight="1.0"
-                android:text="1 Minor"
+                android:text=""
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
@@ -122,19 +124,19 @@
 
 
         <TextView
+            android:id="@+id/txtLocker"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-
+            android:layout_height="wrap_content"
             android:layout_weight="1.5"
-            android:text="Locker Combination:  "
-            android:textSize="24sp" />
+            android:text="Locker Combination: "
+            android:textSize="20sp" />
 
         <TextView
+            android:id="@+id/txtLockerR"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-
+            android:layout_height="wrap_content"
             android:layout_weight="1.0"
-            android:text="52-3-17"
+            android:text=""
             android:textSize="24sp"
             android:textStyle="bold" />
 
