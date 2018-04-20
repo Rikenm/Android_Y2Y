@@ -20,11 +20,13 @@ import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.rikenmaharjan.y2yc.R;
+import com.rikenmaharjan.y2yc.utils.SessionManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 
 /**
  * Created by wangdayuan on 4/7/18.
@@ -34,7 +36,12 @@ public class FeedBackSubmitFragment extends Fragment {
 
     private EditText feedBack;
     private Button feedBackSubmit;
-    String id = new String();
+
+    public SessionManager session;
+    String id;
+    String name;
+
+
 
     public FeedBackSubmitFragment(){}
 
@@ -42,12 +49,23 @@ public class FeedBackSubmitFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        if (getArguments()!=null){
+        session = new SessionManager(getContext());
 
-            id = getArguments().getString("id"); //gives me null why??????
-            Log.e("inside_the_getarg",id);
+        session.checkLogin();
 
-        }
+
+
+
+        // get user data from session
+        HashMap<String, String> user = session.getUserDetails();
+
+        // name
+        name = user.get(SessionManager.KEY_NAME);
+
+        // email
+        id = user.get(SessionManager.KEY_ID);
+
+
 
 
 

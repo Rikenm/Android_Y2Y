@@ -19,6 +19,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.rikenmaharjan.y2yc.R;
 import com.rikenmaharjan.y2yc.activities.Main2Activity;
+import com.rikenmaharjan.y2yc.utils.SessionManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,6 +32,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  * Created by wangdayuan on 4/7/18.
@@ -42,8 +44,35 @@ public class ViewLotteryResultFragment extends Fragment {
     private TextView date2;
     private TextView longTermLottery;
     private TextView eBedLottery;
+    public SessionManager session;
+    String id;
+    String name;
+
 
     public ViewLotteryResultFragment(){}
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        session = new SessionManager(getContext());
+
+        session.checkLogin();
+
+
+
+
+        // get user data from session
+        HashMap<String, String> user = session.getUserDetails();
+
+        // name
+        name = user.get(SessionManager.KEY_NAME);
+
+        // email
+        id = user.get(SessionManager.KEY_ID);
+
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

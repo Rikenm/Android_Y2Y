@@ -48,6 +48,7 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.rikenmaharjan.y2yc.utils.SessionManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -63,6 +64,11 @@ public class ViewActionFragment extends BaseFragment {
         return new ViewActionFragment();
     }
 
+
+    public SessionManager session;
+    String id;
+    String name;
+
     private
     ExpandableListView actions;
     ExpandableListAdapter adapter;
@@ -75,6 +81,31 @@ public class ViewActionFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        session = new SessionManager(getContext());
+
+        session.checkLogin();
+        //this takes you to login page if you are not logged in
+
+
+
+        // get user data from session
+        HashMap<String, String> user = session.getUserDetails();
+
+        // name
+        name = user.get(SessionManager.KEY_NAME);
+
+        // email
+        id = user.get(SessionManager.KEY_ID);
+
+       // this makes user that every fragment gets id and name of the user
+
+
+
     }
 
     @Nullable
