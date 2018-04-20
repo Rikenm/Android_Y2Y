@@ -86,8 +86,11 @@ public class ViewActionFragment extends BaseFragment {
         txtview.setText("Here are your ongoing goals and action items. We would love to hear any updates or progress!");
         actions = rootView.findViewById(R.id.actions);
         prepareListData();
-        adapter = new MyCustomAdapter(this.getContext(), Header, Child);
-        actions.setAdapter(adapter);
+        Log.d("header",Header.toString());
+        Log.d("child",Child.toString());
+        //
+
+
         actions.setOnGroupClickListener(new OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
@@ -162,6 +165,9 @@ public class ViewActionFragment extends BaseFragment {
                         action_item_ids.add(step_item_ids);
                         List<String> temp = Arrays.asList(childList.get(i));
                         Child.put(Header.get(i), temp);
+
+                        adapter = new MyCustomAdapter(getContext(), Header, Child);
+                        actions.setAdapter(adapter);
                     }
                 }
                 catch (JSONException e) {
@@ -270,7 +276,7 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
                                         JSONArray newrecords = new JSONArray(current_record);
                                         jo.put("size", current_record.size());
                                         jo.put("comment", reason.getText().toString());
-                                        jo.putOpt("records", newrecords);
+                                        jo.putOpt("records", current_record);
                                         jo.put("actionid", current_action_id);
 
                                         Toast.makeText(frag.getActivity().getApplicationContext(), "Information Saved", Toast.LENGTH_SHORT).show();
