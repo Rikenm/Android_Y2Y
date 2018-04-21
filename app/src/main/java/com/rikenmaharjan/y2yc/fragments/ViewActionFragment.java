@@ -75,6 +75,8 @@ public class ViewActionFragment extends BaseFragment {
     List<String> Header;
     HashMap<String, List<String>> Child;
     TextView txtview;
+
+    public  View rootView;
     public final List<Boolean[]> childCheckbox = new ArrayList<>();
     public final List<String> action_item_ids = new ArrayList<>();
     public final List<String[]> action_item_step_ids = new ArrayList<>();
@@ -114,7 +116,7 @@ public class ViewActionFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_view_action,container,false);
+        rootView = inflater.inflate(R.layout.fragment_view_action,container,false);
         txtview = rootView.findViewById(R.id.txtView);
         txtview.setText("Here are your ongoing goals and action items. We would love to hear any updates or progress!");
         actions = rootView.findViewById(R.id.actions);
@@ -218,6 +220,7 @@ public class ViewActionFragment extends BaseFragment {
 
                         adapter = new MyCustomAdapter(getContext(), Header, Child);
                         actions.setAdapter(adapter);
+                        rootView.findViewById(R.id.loadingPanel).setVisibility(View.GONE);
                     }
                 }
                 catch (JSONException e) {

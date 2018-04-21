@@ -13,9 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.hsalf.smilerating.BaseRating;
+import com.hsalf.smilerating.SmileRating;
 import com.rikenmaharjan.y2yc.R;
 import com.rikenmaharjan.y2yc.R2;
 //import com.rikenmaharjan.y2yc.activities.HomeActivity;
@@ -43,7 +46,7 @@ public class HomeFragment extends BaseFragment {
 
 
 
-    String rate= new String();
+    String rate= "0";
 
 
 
@@ -53,11 +56,13 @@ public class HomeFragment extends BaseFragment {
     @BindView(R2.id.fragment_home_btnsave)
     Button mSaveButton;
 
-    @BindView(R2.id.fragment_home_btnrating1)
-    Button mRate1Button;
+
+
 
     @BindView(R2.id.fragment_home_introEt)
     TextView introTxt;
+
+
 
 
     String response;
@@ -75,6 +80,53 @@ public class HomeFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home,container,false);
         mUnbinder = ButterKnife.bind(this,rootView);
+
+
+
+        SmileRating smileRating = (SmileRating) rootView.findViewById(R.id.smile_rating);
+
+
+        smileRating.setOnSmileySelectionListener(new SmileRating.OnSmileySelectionListener() {
+            @Override
+            public void onSmileySelected(@BaseRating.Smiley int smiley, boolean reselected) {
+                // reselected is false when user selects different smiley that previously selected one
+                // true when the same smiley is selected.
+                // Except if it first time, then the value will be false.
+                String TAG = "tag";
+
+                switch (smiley) {
+
+
+                    case SmileRating.BAD:
+                        rate ="1";
+                        Log.i("tag", "Bad");
+                        break;
+                    case SmileRating.GOOD:
+                        rate ="2";
+                        Log.i(TAG, "Good");
+                        break;
+                    case SmileRating.GREAT:
+                        rate ="3";
+                        Log.i(TAG, "Great");
+                        break;
+                    case SmileRating.OKAY:
+                        rate ="4";
+                        Log.i(TAG, "Okay");
+                        break;
+                    case SmileRating.TERRIBLE:
+                        rate ="5";
+                        Log.i(TAG, "Terrible");
+                        break;
+                }
+            }
+        });
+
+
+
+
+
+
+
 
 
 
@@ -156,15 +208,16 @@ public class HomeFragment extends BaseFragment {
 
 
 
-    @OnClick(R2.id.fragment_home_btnrating1)
-    public void setmRate1Button(){
-
-        rate = "1";
-        mRate1Button.setBackgroundColor(Color.RED);
 
 
 
-    }
+
+
+
+
+
+
+
 
     @OnClick(R2.id.fragment_home_btnsave)
     public void setmSaveButton(){
