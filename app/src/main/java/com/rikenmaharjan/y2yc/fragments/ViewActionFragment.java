@@ -76,7 +76,9 @@ public class ViewActionFragment extends BaseFragment {
     HashMap<String, List<String>> Child;
     TextView txtview;
     public final List<Boolean[]> childCheckbox = new ArrayList<>();
-    public final List<String[]> action_item_ids = new ArrayList<>();
+    public final List<String> action_item_ids = new ArrayList<>();
+    public final List<String[]> action_item_step_ids = new ArrayList<>();
+    public final List<Integer> action_item_num_steps = new ArrayList<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -119,7 +121,6 @@ public class ViewActionFragment extends BaseFragment {
         prepareListData();
         Log.d("header",Header.toString());
         Log.d("child",Child.toString());
-        //
 
 
         actions.setOnGroupClickListener(new OnGroupClickListener() {
@@ -160,7 +161,23 @@ public class ViewActionFragment extends BaseFragment {
         Child = new HashMap<String, List<String>>();
 
         RequestQueue queue = Volley.newRequestQueue(getActivity());
-        String url = "https://y2y.herokuapp.com/actionitems";
+        session = new SessionManager(getContext());
+
+        session.checkLogin();
+        //this takes you to login page if you are not logged in
+
+
+
+        // get user data from session
+        HashMap<String, String> user = session.getUserDetails();
+
+        // name
+        name = user.get(SessionManager.KEY_NAME);
+
+        // email
+        id = user.get(SessionManager.KEY_ID);
+
+        String url = "https://y2y.herokuapp.com/actionitems/"+id;
 
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
@@ -177,10 +194,12 @@ public class ViewActionFragment extends BaseFragment {
                     for (int i = 0; i < num_action_items; i++) {
                         Header.add(my_action_items.getJSONObject(i).getString("name"));
                         num_steps = Integer.parseInt(my_action_items.getJSONObject(i).getString("numb_of_step"));
+                        action_item_num_steps.add(num_steps);
                         String[] steps = new String[num_steps];
                         Boolean[] checkboxList = new Boolean[num_steps];
                         String[] step_item_ids = new String[num_steps];
                         String current_action_id = my_action_items.getJSONObject(i).getString("id");
+                        action_item_ids.add(current_action_id);
                         JSONObject current_action = apiResult.getJSONObject(current_action_id);
                         for (int j = 0; j < num_steps; j++) {
                             steps[j] = (current_action.getString(Integer.toString(j+1)));
@@ -193,7 +212,7 @@ public class ViewActionFragment extends BaseFragment {
                         }
                         childList.add(steps);
                         childCheckbox.add(checkboxList);
-                        action_item_ids.add(step_item_ids);
+                        action_item_step_ids.add(step_item_ids);
                         List<String> temp = Arrays.asList(childList.get(i));
                         Child.put(Header.get(i), temp);
 
@@ -221,9 +240,17 @@ public class ViewActionFragment extends BaseFragment {
         return childCheckbox;
     }
 
-    public List<String[]> action_item_ids_Data() {
+    public List<String> action_item_ids_Data() {
         return action_item_ids;
     }
+
+    public List<String[]> action_item_step_ids_Data() {
+        return action_item_step_ids;
+    }
+
+    public String get_user_id() { return id; }
+
+    public List<Integer> get_num_steps() { return action_item_num_steps; }
 }
 
 
@@ -259,6 +286,10 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 
+        if (frag.get_num_steps().get(groupPosition) == 0) {
+            return null;
+        }
+
         final String childText = (String) getChild(groupPosition, childPosition);
 
         if (convertView == null) {
@@ -266,7 +297,7 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
             convertView = inflater.inflate(R.layout.list_item, null);
         }
         final List<Boolean[]> childCheckCheckbox = frag.childCheckboxData();
-        final List<String[]> action_item_ids = frag.action_item_ids_Data();
+        final List<String[]> action_item_ids = frag.action_item_step_ids_Data();
         TextView txtListChild = convertView.findViewById(R.id.myListItem);
         CheckBox checkBox3 = convertView.findViewById(R.id.checkBox3);
         CheckBox checkBox4 = convertView.findViewById(R.id.checkBox4);
@@ -304,7 +335,6 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
                                         List<String> current_record = completed_steps.get(current_action_id);
                                         current_record.add(current_step_id);
                                         completed_steps.put(current_action_id, current_record);
-                                        JSONArray newrecords = new JSONArray(current_record);
                                         jo.put("size", current_record.size());
                                         jo.put("comment", reason.getText().toString());
                                         jo.putOpt("records", current_record);
@@ -372,8 +402,8 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
             TextView myListHeader = convertView.findViewById(R.id.myListHeader);
             CheckBox checkBox1 = convertView.findViewById(R.id.checkBox1);
             CheckBox checkBox2 = convertView.findViewById(R.id.checkBox2);
-            final EditText reason = convertView.findViewById(R.id.action_reason);
-            final Button save_reason = convertView.findViewById(R.id.btnreason);
+            final EditText reason = (EditText) convertView.findViewById(R.id.action_reason);
+            final Button save_reason = (Button) convertView.findViewById(R.id.btnreason);
             myListHeader.setTypeface(null, Typeface.BOLD);
             myListHeader.setText(headerTitle);
 
@@ -393,14 +423,12 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
                                 RequestQueue queue = Volley.newRequestQueue(frag.getActivity().getApplicationContext());
                                 String url = "https://y2y.herokuapp.com/actionitems";
 
-                                StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+                                StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                                     @Override
                                     public void onResponse(String response) {
                                         Log.i("request successful", response);
                                         try {
-                                            JSONObject apiResult = new JSONObject(response);
-                                            JSONArray my_action_items = apiResult.getJSONArray("records");
-                                            String current_action_id = my_action_items.getJSONObject(groupPosition).getString("id");
+                                            String current_action_id = frag.action_item_ids_Data().get(groupPosition);
                                             completed_steps.put(current_action_id, null);
                                             JSONObject jo = new JSONObject();
                                             jo.put("flag", "Completed");
@@ -445,14 +473,12 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
                                 RequestQueue queue = Volley.newRequestQueue(frag.getActivity().getApplicationContext());
                                 String url = "https://y2y.herokuapp.com/actionitems";
 
-                                StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+                                StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                                     @Override
                                     public void onResponse(String response) {
                                         Log.i("request successful", response);
                                         try {
-                                            JSONObject apiResult = new JSONObject(response);
-                                            JSONArray my_action_items = apiResult.getJSONArray("records");
-                                            String current_action_id = my_action_items.getJSONObject(groupPosition).getString("id");
+                                            String current_action_id = frag.action_item_ids_Data().get(groupPosition);
                                             JSONObject jo = new JSONObject();
                                             jo.put("flag", "Dropped");
                                             jo.put("actionid", current_action_id);

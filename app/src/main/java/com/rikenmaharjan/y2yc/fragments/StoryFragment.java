@@ -81,7 +81,7 @@ public class StoryFragment extends BaseFragment {
         txtMajor = (TextView) view.findViewById(R.id.txtMajor);
 
         RequestQueue queue = Volley.newRequestQueue(getActivity());
-        String url = "https://y2y.herokuapp.com/detailuser/0031D000003OvlSQAS";
+        String url = "https://y2y.herokuapp.com/detailuser/"+id;
         //String url = "https://y2y.herokuapp.com/detailuser/"+id;
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
