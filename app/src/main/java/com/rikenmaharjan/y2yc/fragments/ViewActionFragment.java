@@ -333,13 +333,13 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
                     //save_reason.setVisibility(View.VISIBLE);
                     if (isChecked & reason.getText() == null) {
 
-                        Toast.makeText(frag.getContext(), "Please explain your action in the comment box below.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, "Please explain your action in the comment box below.", Toast.LENGTH_LONG).show();
                     }
                     save_reason.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
 
-                            final RequestQueue queue = Volley.newRequestQueue(frag.getContext());
+                            final RequestQueue queue = Volley.newRequestQueue(context);
 
                             String url = "https://y2y.herokuapp.com/actionitemstep";
 
@@ -426,11 +426,13 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
             myListHeader.setTypeface(null, Typeface.BOLD);
             myListHeader.setText(headerTitle);
 
+
             checkBox1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton complete, boolean isChecked) {
 
                     Log.d("ischeck", String.valueOf(isChecked));
+
 
                     if (isChecked==true) {
 
@@ -438,13 +440,13 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
                         //reason.setVisibility(View.VISIBLE);
                         //save_reason.setVisibility(View.VISIBLE);
                         if (isChecked & reason.getText() == null) {
-                            Toast.makeText(frag.getContext(), "Please explain your action in the comment box below.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, "Please explain your action in the comment box below.", Toast.LENGTH_LONG).show();
                         }
                         save_reason.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
 
-                                RequestQueue queue = Volley.newRequestQueue(frag.getContext());
+                                RequestQueue queue = Volley.newRequestQueue(context);
                                 String url = "https://y2y.herokuapp.com/actionitems";
 
                                 StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
@@ -457,6 +459,7 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
                                             JSONObject jo = new JSONObject();
                                             jo.put("flag", "Completed");
                                             jo.put("actionid", current_action_id);
+
                                             jo.put("comment", reason.getText().toString());
                                             Toast.makeText(frag.getContext(), "Information Saved", Toast.LENGTH_SHORT).show();
                                         } catch (JSONException e) {
@@ -467,6 +470,8 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
                                 }, new Response.ErrorListener() {
                                     @Override
                                     public void onErrorResponse(VolleyError error) {
+                                       
+                                        Log.d("msg",reason.getText().toString());
                                         Log.i("request failed", "failed");
                                     }
                                 });
@@ -493,13 +498,13 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
                         //reason.setVisibility(View.VISIBLE);
                         //save_reason.setVisibility(View.VISIBLE);
                         if (isChecked & reason.getText() == null) {
-                            Toast.makeText(frag.getContext(), "Please explain your action in the comment box below.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, "Please explain your action in the comment box below.", Toast.LENGTH_LONG).show();
                         }
                         save_reason.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
 
-                                RequestQueue queue = Volley.newRequestQueue(frag.getContext());
+                                RequestQueue queue = Volley.newRequestQueue(context);
                                 String url = "https://y2y.herokuapp.com/actionitems";
 
                                 StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
