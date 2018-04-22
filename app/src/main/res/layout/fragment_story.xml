@@ -1,13 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingTop="20dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:background="#eeeeee"
     android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="400dp">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
 
     <LinearLayout
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="25dp"
         android:layout_marginLeft="30dp"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
@@ -20,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Bed:"
-            android:textSize="24sp" />
+            android:textSize="22sp" />
 
         <TextView
             android:id="@+id/txtBedR"
@@ -29,7 +44,7 @@
             android:layout_marginLeft="20dp"
             android:layout_weight="5"
             android:text=""
-            android:textSize="24sp"
+            android:textSize="22sp"
             android:textStyle="bold" />
 
 
@@ -50,7 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Last Day of Stay: "
-            android:textSize="24sp" />
+            android:textSize="22sp" />
 
         <TextView
             android:id="@+id/txtDayR"
@@ -59,7 +74,7 @@
             android:layout_marginLeft="20dp"
             android:layout_weight="1"
             android:text=""
-            android:textSize="24sp"
+            android:textSize="22sp"
             android:textStyle="bold" />
 
     </LinearLayout>
@@ -69,7 +84,7 @@
         android:layout_height="0dp"
         android:layout_weight="2"
         android:orientation="horizontal"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="30dp">
 
         <TextView
@@ -78,7 +93,7 @@
             android:layout_height="match_parent"
             android:layout_weight="0.8"
             android:text="# of Warnings:"
-            android:textSize="24sp" />
+            android:textSize="22sp" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -93,7 +108,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
                 android:text=""
-                android:textSize="24sp"
+                android:textSize="22sp"
                 android:textStyle="bold" />
 
 
@@ -103,7 +118,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
                 android:text=""
-                android:textSize="24sp"
+                android:textSize="22sp"
                 android:textStyle="bold" />
 
         </LinearLayout>
@@ -136,8 +151,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1.0"
+            android:layout_marginTop="15dp"
             android:text=""
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
     </LinearLayout>
@@ -157,7 +173,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="NIT:"
-            android:textSize="24sp" />
+            android:textSize="22sp" />
 
         <TextView
             android:id="@+id/txtNITR"
@@ -166,7 +182,7 @@
             android:layout_marginLeft="20dp"
             android:layout_weight="5"
             android:text=""
-            android:textSize="24sp"
+            android:textSize="22sp"
             android:textStyle="bold" />
 
 
@@ -179,7 +195,7 @@
         android:orientation="vertical"
         android:layout_weight="1"
         android:layout_gravity="center"
-        android:layout_marginBottom="20dp"
+
         >
 
         <ProgressBar
@@ -193,6 +209,8 @@
 
     </LinearLayout>
 
+    </LinearLayout>
 
+</android.support.v7.widget.CardView>
 
 </LinearLayout>
