@@ -124,6 +124,8 @@ public class ViewActionFragment extends BaseFragment {
         actions = rootView.findViewById(R.id.actions);
         reason = rootView.findViewById(R.id.action_reason);
         save_reason = rootView.findViewById(R.id.btnreason);
+        //reason.setVisibility(View.INVISIBLE);
+        //save_reason.setVisibility(View.INVISIBLE);
         prepareListData();
         Log.d("header",Header.toString());
         Log.d("child",Child.toString());
@@ -132,7 +134,7 @@ public class ViewActionFragment extends BaseFragment {
         actions.setOnGroupClickListener(new OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                Toast.makeText(getActivity().getApplicationContext(),"Group Clicked " + Header.get(groupPosition), Toast.LENGTH_SHORT).show();;
+                //Toast.makeText(getContext(),"Group Clicked " + Header.get(groupPosition), Toast.LENGTH_SHORT).show();;
                 return false;
             }
         });
@@ -140,21 +142,21 @@ public class ViewActionFragment extends BaseFragment {
         actions.setOnGroupExpandListener(new OnGroupExpandListener() {
             @Override
             public void onGroupExpand(int groupPosition) {
-                Toast.makeText(getActivity().getApplicationContext(), Header.get(groupPosition) + " Expanded", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(), Header.get(groupPosition) + " Expanded", Toast.LENGTH_SHORT).show();
             }
         });
 
         actions.setOnGroupCollapseListener(new OnGroupCollapseListener() {
             @Override
             public void onGroupCollapse(int groupPosition) {
-                Toast.makeText(getActivity().getApplicationContext(),Header.get(groupPosition) + " Collapsed", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(),Header.get(groupPosition) + " Collapsed", Toast.LENGTH_SHORT).show();
             }
         });
 
         actions.setOnChildClickListener(new OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                Toast.makeText(getActivity().getApplicationContext(),Header.get(groupPosition) + " : " + Child.get(Header.get(groupPosition)).get(childPosition), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(),Header.get(groupPosition) + " : " + Child.get(Header.get(groupPosition)).get(childPosition), Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
@@ -243,7 +245,7 @@ public class ViewActionFragment extends BaseFragment {
         Log.i("result",queue.toString());
     }
 
-    public  static List<Boolean[]> childCheckboxData() {
+    public static List<Boolean[]> childCheckboxData() {
         return childCheckbox;
     }
 
@@ -268,6 +270,8 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
     HashMap<String, List<String>> Child;
     HashMap<String, List<String>> completed_steps;
     final ViewActionFragment frag = new ViewActionFragment();
+    final EditText reason = ViewActionFragment.reason;
+    final Button save_reason = ViewActionFragment.save_reason;
 
     public MyCustomAdapter(Context context, List<String> listDataHeader, HashMap<String, List<String>> listChildData) {
         this.context = context;
@@ -310,8 +314,6 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
         TextView txtListChild = convertView.findViewById(R.id.myListItem);
         CheckBox checkBox3 = convertView.findViewById(R.id.checkBox3);
         CheckBox checkBox4 = convertView.findViewById(R.id.checkBox4);
-        final EditText reason = ViewActionFragment.reason;
-        final Button save_reason = ViewActionFragment.save_reason;
 
         txtListChild.setText(childText);
         checkBox3.setChecked(childCheckCheckbox.get(groupPosition)[childPosition]);
@@ -321,28 +323,23 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
             @Override
             public void onCheckedChanged(CompoundButton complete, boolean isChecked) {
 
-
-
                 Log.d("ischeck", String.valueOf(isChecked));
 
 
                 if (isChecked==true) {
 
                     Log.d("hello", String.valueOf(isChecked));
-                    reason.setVisibility(View.VISIBLE);
-                    save_reason.setVisibility(View.VISIBLE);
+                    //reason.setVisibility(View.VISIBLE);
+                    //save_reason.setVisibility(View.VISIBLE);
                     if (isChecked & reason.getText() == null) {
-                        Toast.makeText(frag.getActivity().getApplicationContext(), "Please explain your action in the comment box below.", Toast.LENGTH_LONG).show();
+
                         Toast.makeText(frag.getContext(), "Please explain your action in the comment box below.", Toast.LENGTH_LONG).show();
                     }
                     save_reason.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
 
-                            final EditText reason = ViewActionFragment.reason;
-                            Button save_reason = ViewActionFragment.save_reason;
-
-                            final RequestQueue queue = Volley.newRequestQueue(frag.getActivity().getApplicationContext());
+                            final RequestQueue queue = Volley.newRequestQueue(frag.getContext());
 
                             String url = "https://y2y.herokuapp.com/actionitemstep";
 
@@ -362,7 +359,7 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
                                         jo.putOpt("records", current_record);
                                         jo.put("actionid", current_action_id);
 
-                                        Toast.makeText(frag.getActivity().getApplicationContext(), "Information Saved", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(frag.getContext(), "Information Saved", Toast.LENGTH_SHORT).show();
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -380,8 +377,8 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
                         }
                     });
                     reason.setText(null);
-                    reason.setVisibility(View.INVISIBLE);
-                    save_reason.setVisibility(View.INVISIBLE);
+                    //reason.setVisibility(View.INVISIBLE);
+                    //save_reason.setVisibility(View.INVISIBLE);
                 }
             }
         });
@@ -424,8 +421,6 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
             TextView myListHeader = convertView.findViewById(R.id.myListHeader);
             CheckBox checkBox1 = convertView.findViewById(R.id.checkBox1);
             CheckBox checkBox2 = convertView.findViewById(R.id.checkBox2);
-            //final EditText reason = (EditText) convertView.findViewById(R.id.action_reason);
-            //final Button save_reason = (Button) convertView.findViewById(R.id.btnreason);
             final EditText reason = ViewActionFragment.reason;
             final Button save_reason = ViewActionFragment.save_reason;
             myListHeader.setTypeface(null, Typeface.BOLD);
@@ -440,19 +435,16 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
                     if (isChecked==true) {
 
                         Log.d("hello", String.valueOf(isChecked));
-                        reason.setVisibility(View.VISIBLE);
-                        save_reason.setVisibility(View.VISIBLE);
+                        //reason.setVisibility(View.VISIBLE);
+                        //save_reason.setVisibility(View.VISIBLE);
                         if (isChecked & reason.getText() == null) {
-                            Toast.makeText(frag.getActivity().getApplicationContext(), "Please explain your action in the comment box below.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(frag.getContext(), "Please explain your action in the comment box below.", Toast.LENGTH_LONG).show();
                         }
                         save_reason.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
 
-                                final EditText reason = ViewActionFragment.reason;
-                                Button save_reason = ViewActionFragment.save_reason;
-
-                                RequestQueue queue = Volley.newRequestQueue(frag.getActivity().getApplicationContext());
+                                RequestQueue queue = Volley.newRequestQueue(frag.getContext());
                                 String url = "https://y2y.herokuapp.com/actionitems";
 
                                 StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
@@ -466,7 +458,7 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
                                             jo.put("flag", "Completed");
                                             jo.put("actionid", current_action_id);
                                             jo.put("comment", reason.getText().toString());
-                                            Toast.makeText(frag.getActivity().getApplicationContext(), "Information Saved", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(frag.getContext(), "Information Saved", Toast.LENGTH_SHORT).show();
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
@@ -483,8 +475,8 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
                             }
                         });
                         reason.setText(null);
-                        reason.setVisibility(View.INVISIBLE);
-                        save_reason.setVisibility(View.INVISIBLE);
+                        //reason.setVisibility(View.INVISIBLE);
+                        //save_reason.setVisibility(View.INVISIBLE);
                     }
                 }
             });
@@ -498,16 +490,16 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
                     if (isChecked==true) {
 
                         Log.d("hello", String.valueOf(isChecked));
-                        reason.setVisibility(View.VISIBLE);
-                        save_reason.setVisibility(View.VISIBLE);
+                        //reason.setVisibility(View.VISIBLE);
+                        //save_reason.setVisibility(View.VISIBLE);
                         if (isChecked & reason.getText() == null) {
-                            Toast.makeText(frag.getActivity().getApplicationContext(), "Please explain your action in the comment box below.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(frag.getContext(), "Please explain your action in the comment box below.", Toast.LENGTH_LONG).show();
                         }
                         save_reason.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
 
-                                RequestQueue queue = Volley.newRequestQueue(frag.getActivity().getApplicationContext());
+                                RequestQueue queue = Volley.newRequestQueue(frag.getContext());
                                 String url = "https://y2y.herokuapp.com/actionitems";
 
                                 StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
@@ -520,7 +512,7 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
                                             jo.put("flag", "Dropped");
                                             jo.put("actionid", current_action_id);
                                             jo.put("comment", reason.getText().toString());
-                                            Toast.makeText(frag.getActivity().getApplicationContext(), "Information Saved", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(frag.getContext(), "Information Saved", Toast.LENGTH_SHORT).show();
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
@@ -537,8 +529,8 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
                             }
                         });
                         reason.setText(null);
-                        reason.setVisibility(View.INVISIBLE);
-                        save_reason.setVisibility(View.INVISIBLE);
+                        //reason.setVisibility(View.INVISIBLE);
+                        //save_reason.setVisibility(View.INVISIBLE);
                     }
                 }
             });
