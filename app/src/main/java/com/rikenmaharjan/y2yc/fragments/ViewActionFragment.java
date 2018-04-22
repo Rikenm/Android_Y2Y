@@ -66,7 +66,7 @@ public class ViewActionFragment extends BaseFragment {
 
 
     public SessionManager session;
-    String id;
+    static String id;
     String name;
 
     private
@@ -77,10 +77,10 @@ public class ViewActionFragment extends BaseFragment {
     TextView txtview;
 
     public  View rootView;
-    public final List<Boolean[]> childCheckbox = new ArrayList<>();
-    public final List<String> action_item_ids = new ArrayList<>();
-    public final List<String[]> action_item_step_ids = new ArrayList<>();
-    public final List<Integer> action_item_num_steps = new ArrayList<>();
+    public static List<Boolean[]> childCheckbox = new ArrayList<>();
+    public static List<String> action_item_ids = new ArrayList<>();
+    public static List<String[]> action_item_step_ids = new ArrayList<>();
+    public static List<Integer> action_item_num_steps = new ArrayList<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -239,21 +239,21 @@ public class ViewActionFragment extends BaseFragment {
         Log.i("result",queue.toString());
     }
 
-    public List<Boolean[]> childCheckboxData() {
+    public  static List<Boolean[]> childCheckboxData() {
         return childCheckbox;
     }
 
-    public List<String> action_item_ids_Data() {
+    public static List<String> action_item_ids_Data() {
         return action_item_ids;
     }
 
-    public List<String[]> action_item_step_ids_Data() {
+    public static List<String[]> action_item_step_ids_Data() {
         return action_item_step_ids;
     }
 
-    public String get_user_id() { return id; }
+    public static String get_user_id() { return id; }
 
-    public List<Integer> get_num_steps() { return action_item_num_steps; }
+    public static List<Integer> get_num_steps() { return action_item_num_steps; }
 }
 
 
@@ -289,6 +289,8 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 
+
+        Log.d("check", String.valueOf(groupPosition));
         if (frag.get_num_steps().get(groupPosition) == 0) {
             return null;
         }
