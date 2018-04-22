@@ -20,6 +20,8 @@ import com.rikenmaharjan.y2yc.utils.SessionManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.HashMap;
 
 import butterknife.ButterKnife;
@@ -35,6 +37,8 @@ public class StoryFragment extends BaseFragment {
     private TextView txtMinor;
     private TextView txtMajor;
     private TextView txtDayR;
+    private TextView txtDay;
+    private TextView txtNITR;
     private String id;
     private String name;
 
@@ -76,13 +80,16 @@ public class StoryFragment extends BaseFragment {
 
         txtBedR = (TextView) view.findViewById(R.id.txtBedR);
         txtDayR = (TextView) view.findViewById(R.id.txtDayR);
+        txtDay = (TextView) view.findViewById(R.id.txtDay);
         txtLockerR = (TextView) view.findViewById(R.id.txtLockerR);
         txtMinor = (TextView) view.findViewById(R.id.txtMinor);
         txtMajor = (TextView) view.findViewById(R.id.txtMajor);
+        txtNITR = (TextView) view.findViewById(R.id.txtNITR);
 
         RequestQueue queue = Volley.newRequestQueue(getActivity());
         String url = "https://y2y.herokuapp.com/detailuser/"+id;
         //String url = "https://y2y.herokuapp.com/detailuser/"+id;
+
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
@@ -92,10 +99,30 @@ public class StoryFragment extends BaseFragment {
                     JSONObject apiResult = new JSONObject(response);
                     view.findViewById(R.id.loadingPanel).setVisibility(View.GONE);
                     txtBedR.setText(apiResult.getString("Bed_name"));
-                    txtDayR.setText(apiResult.getString("Last_Day_Of_Stay"));
+
+                    String date = apiResult.getString("Last_Day_Of_Stay");
+                    date = date.replace("-", "");
+                    Date now = new Date();
+                    String currentDateTimeString = DateFormat.getInstance().format(now);
+                    String[] currentDate = currentDateTimeString.split("/");
+                    String month = currentDate[0];
+                    if(Integer.parseInt(month) < 10)
+                        month = "0" + month;
+                    String cdate = "20" + currentDate[2].split(" ")[0]+ month +currentDate[1];
+                    if(date.equals("N/A")) {
+                        txtDayR.setText("N/A");
+                    }
+                    else {
+                        if (Integer.parseInt(cdate) > Integer.parseInt(date))
+                            txtDayR.setText("N/A");
+                        else
+                            txtDayR.setText(date);
+                    }
+
                     txtLockerR.setText(apiResult.getString("Locker"));
                     txtMinor.setText(apiResult.getString("Minor_warning")+" Minor");
                     txtMajor.setText(apiResult.getString("Major_warning")+" Major");
+                    txtNITR.setText(apiResult.getString("NIT"));
                 }
                 catch (JSONException e) {
                     e.printStackTrace();
