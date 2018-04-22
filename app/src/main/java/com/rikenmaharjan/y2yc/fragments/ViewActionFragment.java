@@ -81,6 +81,8 @@ public class ViewActionFragment extends BaseFragment {
     public static List<String> action_item_ids = new ArrayList<>();
     public static List<String[]> action_item_step_ids = new ArrayList<>();
     public static List<Integer> action_item_num_steps = new ArrayList<>();
+    public static EditText reason;
+    public static Button save_reason;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -120,6 +122,8 @@ public class ViewActionFragment extends BaseFragment {
         txtview = rootView.findViewById(R.id.txtView);
         txtview.setText("Here are your ongoing goals and action items. We would love to hear any updates or progress!");
         actions = rootView.findViewById(R.id.actions);
+        reason = rootView.findViewById(R.id.action_reason);
+        save_reason = rootView.findViewById(R.id.btnreason);
         prepareListData();
         Log.d("header",Header.toString());
         Log.d("child",Child.toString());
@@ -287,7 +291,7 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+    public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild,  View convertView, ViewGroup parent) {
 
 
         Log.d("check", String.valueOf(groupPosition));
@@ -306,8 +310,9 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
         TextView txtListChild = convertView.findViewById(R.id.myListItem);
         CheckBox checkBox3 = convertView.findViewById(R.id.checkBox3);
         CheckBox checkBox4 = convertView.findViewById(R.id.checkBox4);
-        final EditText reason = convertView.findViewById(R.id.action_reason);
-        final Button save_reason = convertView.findViewById(R.id.btnreason);
+        final EditText reason = ViewActionFragment.reason;
+        final Button save_reason = ViewActionFragment.save_reason;
+
         txtListChild.setText(childText);
         checkBox3.setChecked(childCheckCheckbox.get(groupPosition)[childPosition]);
         checkBox4.setChecked(false);
@@ -315,15 +320,26 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
         checkBox3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton complete, boolean isChecked) {
-                if (complete.isChecked()) {
+
+
+
+                Log.d("ischeck", String.valueOf(isChecked));
+
+
+                if (isChecked==true) {
+
+                    Log.d("hello", String.valueOf(isChecked));
                     reason.setVisibility(View.VISIBLE);
                     save_reason.setVisibility(View.VISIBLE);
-                    while (complete.isChecked() & reason.getText() == null) {
+                    if (isChecked & reason.getText() == null) {
                         Toast.makeText(frag.getActivity().getApplicationContext(), "Please explain your action in the comment box below.", Toast.LENGTH_LONG).show();
                     }
                     save_reason.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
+
+                            final EditText reason = ViewActionFragment.reason;
+                            Button save_reason = ViewActionFragment.save_reason;
 
                             final RequestQueue queue = Volley.newRequestQueue(frag.getActivity().getApplicationContext());
 
@@ -407,23 +423,33 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
             TextView myListHeader = convertView.findViewById(R.id.myListHeader);
             CheckBox checkBox1 = convertView.findViewById(R.id.checkBox1);
             CheckBox checkBox2 = convertView.findViewById(R.id.checkBox2);
-            final EditText reason = (EditText) convertView.findViewById(R.id.action_reason);
-            final Button save_reason = (Button) convertView.findViewById(R.id.btnreason);
+            //final EditText reason = (EditText) convertView.findViewById(R.id.action_reason);
+            //final Button save_reason = (Button) convertView.findViewById(R.id.btnreason);
+            final EditText reason = ViewActionFragment.reason;
+            final Button save_reason = ViewActionFragment.save_reason;
             myListHeader.setTypeface(null, Typeface.BOLD);
             myListHeader.setText(headerTitle);
 
             checkBox1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton complete, boolean isChecked) {
-                    if (complete.isChecked()) {
+
+                    Log.d("ischeck", String.valueOf(isChecked));
+
+                    if (isChecked==true) {
+
+                        Log.d("hello", String.valueOf(isChecked));
                         reason.setVisibility(View.VISIBLE);
                         save_reason.setVisibility(View.VISIBLE);
-                        while (complete.isChecked() & reason.getText() == null) {
+                        if (isChecked & reason.getText() == null) {
                             Toast.makeText(frag.getActivity().getApplicationContext(), "Please explain your action in the comment box below.", Toast.LENGTH_LONG).show();
                         }
                         save_reason.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
+
+                                final EditText reason = ViewActionFragment.reason;
+                                Button save_reason = ViewActionFragment.save_reason;
 
                                 RequestQueue queue = Volley.newRequestQueue(frag.getActivity().getApplicationContext());
                                 String url = "https://y2y.herokuapp.com/actionitems";
@@ -465,10 +491,15 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
             checkBox2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton drop, boolean isChecked) {
-                    if (drop.isChecked()) {
+
+                    Log.d("ischeck", String.valueOf(isChecked));
+
+                    if (isChecked==true) {
+
+                        Log.d("hello", String.valueOf(isChecked));
                         reason.setVisibility(View.VISIBLE);
                         save_reason.setVisibility(View.VISIBLE);
-                        while (drop.isChecked() & reason.getText() == null) {
+                        if (isChecked & reason.getText() == null) {
                             Toast.makeText(frag.getActivity().getApplicationContext(), "Please explain your action in the comment box below.", Toast.LENGTH_LONG).show();
                         }
                         save_reason.setOnClickListener(new View.OnClickListener() {
