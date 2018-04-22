@@ -333,6 +333,7 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
                     save_reason.setVisibility(View.VISIBLE);
                     if (isChecked & reason.getText() == null) {
                         Toast.makeText(frag.getActivity().getApplicationContext(), "Please explain your action in the comment box below.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(frag.getContext(), "Please explain your action in the comment box below.", Toast.LENGTH_LONG).show();
                     }
                     save_reason.setOnClickListener(new View.OnClickListener() {
                         @Override
