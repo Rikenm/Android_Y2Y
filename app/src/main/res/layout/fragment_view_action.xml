@@ -87,7 +87,7 @@
             android:layout_weight="1"
             android:background="@android:drawable/alert_light_frame"
             android:hint="Why?"
-            android:textAlignment="center"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             android:textSize="18sp" />
 
