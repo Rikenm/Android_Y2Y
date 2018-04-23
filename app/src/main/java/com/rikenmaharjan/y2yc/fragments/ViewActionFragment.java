@@ -84,6 +84,7 @@ public class ViewActionFragment extends BaseFragment {
     public static List<Integer> action_item_num_steps = new ArrayList<>();
     public static EditText reason;
     public static Button save_reason;
+    public static HashMap<String, List<String>> completed_steps = new HashMap<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -198,6 +199,7 @@ public class ViewActionFragment extends BaseFragment {
                     int num_action_items;
                     int num_steps;
                     List<String[]> childList = new ArrayList<>();
+                    List<String> complete_step_ids = new ArrayList<>();
                     num_action_items = Integer.parseInt(apiResult.getString("size"));
                     JSONArray my_action_items = apiResult.getJSONArray("records");
                     for (int i = 0; i < num_action_items; i++) {
@@ -205,7 +207,7 @@ public class ViewActionFragment extends BaseFragment {
                         num_steps = Integer.parseInt(my_action_items.getJSONObject(i).getString("numb_of_step"));
                         action_item_num_steps.add(num_steps);
                         String[] steps = new String[num_steps];
-                        Boolean[] checkboxList = new Boolean[num_steps];
+                        //Boolean[] checkboxList = new Boolean[num_steps];
                         String[] step_item_ids = new String[num_steps];
                         String current_action_id = my_action_items.getJSONObject(i).getString("id");
                         action_item_ids.add(current_action_id);
@@ -213,14 +215,16 @@ public class ViewActionFragment extends BaseFragment {
                         for (int j = 0; j < num_steps; j++) {
                             steps[j] = (current_action.getString(Integer.toString(j+1)));
                             step_item_ids[j] = current_action.getString("step_id"+Integer.toString(j+1));
-                            String temp = (current_action.getString("completed"+Integer.toString(j+1)));
-                            if (temp == "false")
-                                checkboxList[j] = false;
-                            else if (temp == "true")
-                                checkboxList[j] = true;
+                            Boolean temp = (current_action.getBoolean("completed"+Integer.toString(j+1)));
+                            //if (temp == "false")
+                                //checkboxList[j] = false;
+                            if (temp)
+                                complete_step_ids.add(step_item_ids[j]);
+                                //checkboxList[j] = true;
                         }
                         childList.add(steps);
                         //childCheckbox.add(checkboxList);
+                        completed_steps.put(current_action_id, complete_step_ids);
                         action_item_step_ids.add(step_item_ids);
                         List<String> temp = Arrays.asList(childList.get(i));
                         Child.put(Header.get(i), temp);
@@ -259,6 +263,7 @@ public class ViewActionFragment extends BaseFragment {
     }
 
     //public static String get_user_id() { return id; }
+    public static HashMap<String, List<String>> getCompleted_steps() { return completed_steps; }
 
     public static List<Integer> get_num_steps() { return action_item_num_steps; }
 }
@@ -269,8 +274,8 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
     Context context;
     List<String> Header;
     HashMap<String, List<String>> Child;
-    HashMap<String, List<String>> completed_steps = new HashMap<>();
     final ViewActionFragment frag = new ViewActionFragment();
+    HashMap<String, List<String>> completed_steps = frag.getCompleted_steps();
     final EditText reason = ViewActionFragment.reason;
     final Button save_reason = ViewActionFragment.save_reason;
 
@@ -313,17 +318,26 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
         //final List<Boolean[]> childCheckbox = frag.childCheckboxData();
         final List<String> action_item_ids = frag.action_item_ids_Data();
         final List<String[]> action_item_step_ids = frag.action_item_step_ids_Data();
+        final String current_action_id = action_item_ids.get(groupPosition);
+        final String current_step_id = action_item_step_ids.get(groupPosition)[childPosition];
         TextView txtListChild = convertView.findViewById(R.id.myListItem);
         CheckBox checkBox3 = convertView.findViewById(R.id.checkBox3);
         CheckBox checkBox4 = convertView.findViewById(R.id.checkBox4);
 
         txtListChild.setText(childText);
-        //checkBox3.setChecked(childCheckbox.get(groupPosition)[childPosition]);
+        List<String> completed_steps_list = completed_steps.get(current_action_id);
+        Boolean action_completed = false;
+        for (int i = 0; i < completed_steps_list.size(); i++) {
+            if (completed_steps_list.get(i) == current_step_id) {
+                action_completed = true;
+            }
+        }
+        if (action_completed) {
+            checkBox3.setChecked(true);
+            checkBox3.setClickable(false);
+        }
         checkBox4.setChecked(false);
         checkBox4.setClickable(false);
-        //if (checkBox3.isChecked()) {
-        //    checkBox3.setClickable(false);
-        //}
 
         checkBox3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
