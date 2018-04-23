@@ -498,7 +498,7 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
 
                                 try {
                                     final RequestQueue requestQueue = Volley.newRequestQueue(context);
-                                    String url = "https://y2y.herokuapp.com/actionitemstep";
+                                    String url = "https://y2y.herokuapp.com/actionitems";
                                     String current_action_id = frag.action_item_ids_Data().get(groupPosition);
                                     //completed_steps.put(current_action_id, new ArrayList<String>());
                                     JSONObject jo = new JSONObject();
@@ -512,7 +512,7 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
                                     StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                                         @Override
                                         public void onResponse(String response) {
-                                            Log.i("VOLLEY", response);
+                                            Log.i("VOLLEY", response.toString());
                                         }
                                     }, new Response.ErrorListener() {
                                         @Override
@@ -581,7 +581,7 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
 
                                 try {
                                     final RequestQueue requestQueue = Volley.newRequestQueue(context);
-                                    String url = "https://y2y.herokuapp.com/actionitemstep";
+                                    String url = "https://y2y.herokuapp.com/actionitems";
                                     String current_action_id = frag.action_item_ids_Data().get(groupPosition);
                                     //completed_steps.put(current_action_id, null);
                                     JSONObject jo = new JSONObject();
