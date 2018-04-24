@@ -278,6 +278,8 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
     HashMap<String, List<String>> completed_steps = frag.getCompleted_steps();
     final EditText reason = ViewActionFragment.reason;
     final Button save_reason = ViewActionFragment.save_reason;
+    HashMap<String, List<String>> new_comments;
+    String comm;
 
     public MyCustomAdapter(Context context, List<String> listDataHeader, HashMap<String, List<String>> listChildData) {
         this.context = context;
@@ -326,15 +328,13 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
 
         txtListChild.setText(childText);
         List<String> completed_steps_list = completed_steps.get(current_action_id);
-        Boolean action_completed = false;
+        //Boolean step_completed = false;
         for (int i = 0; i < completed_steps_list.size(); i++) {
             if (completed_steps_list.get(i) == current_step_id) {
-                action_completed = true;
+                //step_completed = true;
+                checkBox3.setChecked(true);
+                checkBox3.setClickable(false);
             }
-        }
-        if (action_completed) {
-            checkBox3.setChecked(true);
-            checkBox3.setClickable(false);
         }
         checkBox4.setChecked(false);
         checkBox4.setClickable(false);
@@ -342,108 +342,581 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
         checkBox3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton complete, boolean isChecked) {
-
-                Log.d("ischeck", String.valueOf(isChecked));
-
                 if (isChecked == true) {
-                    //complete.setClickable(false);
-                    Log.d("hello", String.valueOf(isChecked));
-                    //reason.setVisibility(View.VISIBLE);
-                    //save_reason.setVisibility(View.VISIBLE);
                     Toast.makeText(context, "Please explain your action in the comment box below.", Toast.LENGTH_LONG).show();
                     save_reason.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
+                            List<String> completed_steps_list = completed_steps.get(current_action_id);
+                            completed_steps_list.add(current_step_id);
+                            completed_steps.put(current_action_id, completed_steps_list);
+                            comm = reason.getText().toString();
+                            if (completed_steps == null) {
+                                List<String> current_record = new ArrayList<>();
+                                current_record.add(current_step_id);
+                                completed_steps.put(current_action_id, current_record);
+                                if (new_comments == null) {
+                                    HashMap<String, List<String>> new_comments = new HashMap<>();
+                                    List<String> step_ids = new ArrayList<>();
+                                    step_ids.add(current_step_id);
+                                    new_comments.put(comm, step_ids);
+                                    try {
+                                        final RequestQueue requestQueue = Volley.newRequestQueue(context);
+                                        String url = "https://y2y.herokuapp.com/actionitemstep";
+                                        JSONObject jo = new JSONObject();
+                                        jo.put("size", new_comments.get(comm).size());
+                                        jo.put("comment", comm);
+                                        jo.put("records", new_comments.get(comm));
+                                        jo.put("actionid", current_action_id);
+                                        final String requestBody = jo.toString();
+                                        Toast.makeText(context, "Information Saved", Toast.LENGTH_SHORT).show();
 
-                            try {
-                                final RequestQueue requestQueue = Volley.newRequestQueue(context);
-                                String url = "https://y2y.herokuapp.com/actionitemstep";
-                                JSONObject jo = new JSONObject();
-                                String current_action_id = action_item_ids.get(groupPosition);
-                                Log.i("current action id", current_action_id);
-                                String current_step_id = action_item_step_ids.get(groupPosition)[childPosition];
-                                Log.i("current step id", current_step_id);
-                                if (completed_steps == null) {
-                                    HashMap<String, List<String>> completed_steps = new HashMap<>();
+                                        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                                            @Override
+                                            public void onResponse(String response) {
+                                                Log.i("VOLLEY", response);
+                                            }
+                                        }, new Response.ErrorListener() {
+                                            @Override
+                                            public void onErrorResponse(VolleyError error) {
+                                                Log.e("VOLLEY", error.toString());
+                                            }
+                                        }) {
+                                            @Override
+                                            public String getBodyContentType() {
+                                                return "application/json; charset=utf-8";
+                                            }
+
+                                            @Override
+                                            public byte[] getBody() throws AuthFailureError {
+                                                try {
+                                                    return requestBody == null ? null : requestBody.getBytes("utf-8");
+                                                } catch (UnsupportedEncodingException uee) {
+                                                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                                                    return null;
+                                                }
+                                            }
+
+                                            @Override
+                                            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                                                String responseString = "";
+                                                if (response != null) {
+                                                    responseString = String.valueOf(response.statusCode);
+                                                    // can get more details such as response.headers
+                                                    Log.i("response", response.toString());
+                                                }
+                                                return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+                                            }
+                                        };
+
+                                        requestQueue.add(stringRequest);
+
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                                else {
+                                    if (new_comments.get(comm) == null) {
+                                        List<String> step_ids = new_comments.get(comm);
+                                        step_ids.add(current_step_id);
+                                        new_comments.put(comm, step_ids);
+                                        try {
+                                            final RequestQueue requestQueue = Volley.newRequestQueue(context);
+                                            String url = "https://y2y.herokuapp.com/actionitemstep";
+                                            JSONObject jo = new JSONObject();
+                                            jo.put("size", new_comments.get(comm).size());
+                                            jo.put("comment", comm);
+                                            jo.put("records", new_comments.get(comm));
+                                            jo.put("actionid", current_action_id);
+                                            final String requestBody = jo.toString();
+                                            Toast.makeText(context, "Information Saved", Toast.LENGTH_SHORT).show();
+
+                                            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                                                @Override
+                                                public void onResponse(String response) {
+                                                    Log.i("VOLLEY", response);
+                                                }
+                                            }, new Response.ErrorListener() {
+                                                @Override
+                                                public void onErrorResponse(VolleyError error) {
+                                                    Log.e("VOLLEY", error.toString());
+                                                }
+                                            }) {
+                                                @Override
+                                                public String getBodyContentType() {
+                                                    return "application/json; charset=utf-8";
+                                                }
+
+                                                @Override
+                                                public byte[] getBody() throws AuthFailureError {
+                                                    try {
+                                                        return requestBody == null ? null : requestBody.getBytes("utf-8");
+                                                    } catch (UnsupportedEncodingException uee) {
+                                                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                                                        return null;
+                                                    }
+                                                }
+
+                                                @Override
+                                                protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                                                    String responseString = "";
+                                                    if (response != null) {
+                                                        responseString = String.valueOf(response.statusCode);
+                                                        // can get more details such as response.headers
+                                                        Log.i("response", response.toString());
+                                                    }
+                                                    return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+                                                }
+                                            };
+
+                                            requestQueue.add(stringRequest);
+
+
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                    else {
+                                        List<String> step_ids = new_comments.get(comm);
+                                        step_ids.add(current_step_id);
+                                        new_comments.put(comm, step_ids);
+                                        try {
+                                            final RequestQueue requestQueue = Volley.newRequestQueue(context);
+                                            String url = "https://y2y.herokuapp.com/actionitemstep";
+                                            JSONObject jo = new JSONObject();
+                                            jo.put("size", new_comments.get(comm).size());
+                                            jo.put("comment", comm);
+                                            jo.put("records", new_comments.get(comm));
+                                            jo.put("actionid", current_action_id);
+                                            final String requestBody = jo.toString();
+                                            Toast.makeText(context, "Information Saved", Toast.LENGTH_SHORT).show();
+
+                                            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                                                @Override
+                                                public void onResponse(String response) {
+                                                    Log.i("VOLLEY", response);
+                                                }
+                                            }, new Response.ErrorListener() {
+                                                @Override
+                                                public void onErrorResponse(VolleyError error) {
+                                                    Log.e("VOLLEY", error.toString());
+                                                }
+                                            }) {
+                                                @Override
+                                                public String getBodyContentType() {
+                                                    return "application/json; charset=utf-8";
+                                                }
+
+                                                @Override
+                                                public byte[] getBody() throws AuthFailureError {
+                                                    try {
+                                                        return requestBody == null ? null : requestBody.getBytes("utf-8");
+                                                    } catch (UnsupportedEncodingException uee) {
+                                                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                                                        return null;
+                                                    }
+                                                }
+
+                                                @Override
+                                                protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                                                    String responseString = "";
+                                                    if (response != null) {
+                                                        responseString = String.valueOf(response.statusCode);
+                                                        // can get more details such as response.headers
+                                                        Log.i("response", response.toString());
+                                                    }
+                                                    return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+                                                }
+                                            };
+
+                                            requestQueue.add(stringRequest);
+
+
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                }
+                            }
+                            else {
+                                if (completed_steps.get(current_action_id) == null) {
                                     List<String> current_record = new ArrayList<>();
                                     current_record.add(current_step_id);
                                     completed_steps.put(current_action_id, current_record);
-                                    jo.put("size", current_record.size());
-                                    jo.put("comment", reason.getText().toString());
-                                    jo.putOpt("records", current_record);
-                                    jo.put("actionid", current_action_id);
-                                }
-                                else {
-                                    if (completed_steps.get(current_action_id) == null) {
-                                        List<String> current_record = new ArrayList<>();
-                                        current_record.add(current_step_id);
-                                        completed_steps.put(current_action_id, current_record);
-                                        jo.put("size", current_record.size());
-                                        jo.put("comment", reason.getText().toString());
-                                        jo.putOpt("records", current_record);
-                                        jo.put("actionid", current_action_id);
+                                    if (new_comments == null) {
+                                        HashMap<String, List<String>> new_comments = new HashMap<>();
+                                        List<String> step_ids = new ArrayList<>();
+                                        step_ids.add(current_step_id);
+                                        new_comments.put(comm, step_ids);
+                                        try {
+                                            final RequestQueue requestQueue = Volley.newRequestQueue(context);
+                                            String url = "https://y2y.herokuapp.com/actionitemstep";
+                                            JSONObject jo = new JSONObject();
+                                            jo.put("size", new_comments.get(comm).size());
+                                            jo.put("comment", comm);
+                                            jo.put("records", new_comments.get(comm));
+                                            jo.put("actionid", current_action_id);
+                                            final String requestBody = jo.toString();
+                                            Toast.makeText(context, "Information Saved", Toast.LENGTH_SHORT).show();
+
+                                            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                                                @Override
+                                                public void onResponse(String response) {
+                                                    Log.i("VOLLEY", response);
+                                                }
+                                            }, new Response.ErrorListener() {
+                                                @Override
+                                                public void onErrorResponse(VolleyError error) {
+                                                    Log.e("VOLLEY", error.toString());
+                                                }
+                                            }) {
+                                                @Override
+                                                public String getBodyContentType() {
+                                                    return "application/json; charset=utf-8";
+                                                }
+
+                                                @Override
+                                                public byte[] getBody() throws AuthFailureError {
+                                                    try {
+                                                        return requestBody == null ? null : requestBody.getBytes("utf-8");
+                                                    } catch (UnsupportedEncodingException uee) {
+                                                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                                                        return null;
+                                                    }
+                                                }
+
+                                                @Override
+                                                protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                                                    String responseString = "";
+                                                    if (response != null) {
+                                                        responseString = String.valueOf(response.statusCode);
+                                                        // can get more details such as response.headers
+                                                        Log.i("response", response.toString());
+                                                    }
+                                                    return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+                                                }
+                                            };
+
+                                            requestQueue.add(stringRequest);
+
+
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
                                     }
                                     else {
-                                        List<String> current_record = completed_steps.get(current_action_id);
-                                        current_record.add(current_step_id);
-                                        completed_steps.put(current_action_id, current_record);
-                                        jo.put("size", current_record.size());
-                                        jo.put("comment", reason.getText().toString());
-                                        jo.putOpt("records", current_record);
-                                        jo.put("actionid", current_action_id);
+                                        if (new_comments.get(comm) == null) {
+                                            List<String> step_ids = new_comments.get(comm);
+                                            step_ids.add(current_step_id);
+                                            new_comments.put(comm, step_ids);
+                                            try {
+                                                final RequestQueue requestQueue = Volley.newRequestQueue(context);
+                                                String url = "https://y2y.herokuapp.com/actionitemstep";
+                                                JSONObject jo = new JSONObject();
+                                                jo.put("size", new_comments.get(comm).size());
+                                                jo.put("comment", comm);
+                                                jo.put("records", new_comments.get(comm));
+                                                jo.put("actionid", current_action_id);
+                                                final String requestBody = jo.toString();
+                                                Toast.makeText(context, "Information Saved", Toast.LENGTH_SHORT).show();
+
+                                                StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                                                    @Override
+                                                    public void onResponse(String response) {
+                                                        Log.i("VOLLEY", response);
+                                                    }
+                                                }, new Response.ErrorListener() {
+                                                    @Override
+                                                    public void onErrorResponse(VolleyError error) {
+                                                        Log.e("VOLLEY", error.toString());
+                                                    }
+                                                }) {
+                                                    @Override
+                                                    public String getBodyContentType() {
+                                                        return "application/json; charset=utf-8";
+                                                    }
+
+                                                    @Override
+                                                    public byte[] getBody() throws AuthFailureError {
+                                                        try {
+                                                            return requestBody == null ? null : requestBody.getBytes("utf-8");
+                                                        } catch (UnsupportedEncodingException uee) {
+                                                            VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                                                            return null;
+                                                        }
+                                                    }
+
+                                                    @Override
+                                                    protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                                                        String responseString = "";
+                                                        if (response != null) {
+                                                            responseString = String.valueOf(response.statusCode);
+                                                            // can get more details such as response.headers
+                                                            Log.i("response", response.toString());
+                                                        }
+                                                        return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+                                                    }
+                                                };
+
+                                                requestQueue.add(stringRequest);
+
+
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                        else {
+                                            List<String> step_ids = new_comments.get(comm);
+                                            step_ids.add(current_step_id);
+                                            new_comments.put(comm, step_ids);
+                                            try {
+                                                final RequestQueue requestQueue = Volley.newRequestQueue(context);
+                                                String url = "https://y2y.herokuapp.com/actionitemstep";
+                                                JSONObject jo = new JSONObject();
+                                                jo.put("size", new_comments.get(comm).size());
+                                                jo.put("comment", comm);
+                                                jo.put("records", new_comments.get(comm));
+                                                jo.put("actionid", current_action_id);
+                                                final String requestBody = jo.toString();
+                                                Toast.makeText(context, "Information Saved", Toast.LENGTH_SHORT).show();
+
+                                                StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                                                    @Override
+                                                    public void onResponse(String response) {
+                                                        Log.i("VOLLEY", response);
+                                                    }
+                                                }, new Response.ErrorListener() {
+                                                    @Override
+                                                    public void onErrorResponse(VolleyError error) {
+                                                        Log.e("VOLLEY", error.toString());
+                                                    }
+                                                }) {
+                                                    @Override
+                                                    public String getBodyContentType() {
+                                                        return "application/json; charset=utf-8";
+                                                    }
+
+                                                    @Override
+                                                    public byte[] getBody() throws AuthFailureError {
+                                                        try {
+                                                            return requestBody == null ? null : requestBody.getBytes("utf-8");
+                                                        } catch (UnsupportedEncodingException uee) {
+                                                            VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                                                            return null;
+                                                        }
+                                                    }
+
+                                                    @Override
+                                                    protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                                                        String responseString = "";
+                                                        if (response != null) {
+                                                            responseString = String.valueOf(response.statusCode);
+                                                            // can get more details such as response.headers
+                                                            Log.i("response", response.toString());
+                                                        }
+                                                        return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+                                                    }
+                                                };
+
+                                                requestQueue.add(stringRequest);
+
+
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
                                     }
                                 }
-                                final String requestBody = jo.toString();
-
-                                StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-                                    @Override
-                                    public void onResponse(String response) {
-                                        Log.i("VOLLEY", response);
-                                    }
-                                }, new Response.ErrorListener() {
-                                    @Override
-                                    public void onErrorResponse(VolleyError error) {
-                                        Log.e("VOLLEY", error.toString());
-                                    }
-                                }) {
-                                    @Override
-                                    public String getBodyContentType() {
-                                        return "application/json; charset=utf-8";
-                                    }
-
-                                    @Override
-                                    public byte[] getBody() throws AuthFailureError {
+                                else {
+                                    List<String> current_record = completed_steps.get(current_action_id);
+                                    current_record.add(current_step_id);
+                                    completed_steps.put(current_action_id, current_record);
+                                    if (new_comments == null) {
+                                        HashMap<String, List<String>> new_comments = new HashMap<>();
+                                        List<String> step_ids = new ArrayList<>();
+                                        step_ids.add(current_step_id);
+                                        new_comments.put(comm, step_ids);
                                         try {
-                                            return requestBody == null ? null : requestBody.getBytes("utf-8");
-                                        } catch (UnsupportedEncodingException uee) {
-                                            VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
-                                            return null;
+                                            final RequestQueue requestQueue = Volley.newRequestQueue(context);
+                                            String url = "https://y2y.herokuapp.com/actionitemstep";
+                                            JSONObject jo = new JSONObject();
+                                            jo.put("size", new_comments.get(comm).size());
+                                            jo.put("comment", comm);
+                                            jo.put("records", new_comments.get(comm));
+                                            jo.put("actionid", current_action_id);
+                                            final String requestBody = jo.toString();
+                                            Toast.makeText(context, "Information Saved", Toast.LENGTH_SHORT).show();
+
+                                            StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                                                @Override
+                                                public void onResponse(String response) {
+                                                    Log.i("VOLLEY", response);
+                                                }
+                                            }, new Response.ErrorListener() {
+                                                @Override
+                                                public void onErrorResponse(VolleyError error) {
+                                                    Log.e("VOLLEY", error.toString());
+                                                }
+                                            }) {
+                                                @Override
+                                                public String getBodyContentType() {
+                                                    return "application/json; charset=utf-8";
+                                                }
+
+                                                @Override
+                                                public byte[] getBody() throws AuthFailureError {
+                                                    try {
+                                                        return requestBody == null ? null : requestBody.getBytes("utf-8");
+                                                    } catch (UnsupportedEncodingException uee) {
+                                                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                                                        return null;
+                                                    }
+                                                }
+
+                                                @Override
+                                                protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                                                    String responseString = "";
+                                                    if (response != null) {
+                                                        responseString = String.valueOf(response.statusCode);
+                                                        // can get more details such as response.headers
+                                                        Log.i("response", response.toString());
+                                                    }
+                                                    return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+                                                }
+                                            };
+
+                                            requestQueue.add(stringRequest);
+
+
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
                                         }
                                     }
+                                    else {
+                                        if (new_comments.get(comm) == null) {
+                                            List<String> step_ids = new ArrayList<>();
+                                            step_ids.add(current_step_id);
+                                            new_comments.put(comm, step_ids);
+                                            try {
+                                                final RequestQueue requestQueue = Volley.newRequestQueue(context);
+                                                String url = "https://y2y.herokuapp.com/actionitemstep";
+                                                JSONObject jo = new JSONObject();
+                                                jo.put("size", new_comments.get(comm).size());
+                                                jo.put("comment", comm);
+                                                jo.put("records", new_comments.get(comm));
+                                                jo.put("actionid", current_action_id);
+                                                final String requestBody = jo.toString();
+                                                Toast.makeText(context, "Information Saved", Toast.LENGTH_SHORT).show();
 
-                                    @Override
-                                    protected Response<String> parseNetworkResponse(NetworkResponse response) {
-                                        String responseString = "";
-                                        if (response != null) {
-                                            responseString = String.valueOf(response.statusCode);
-                                            // can get more details such as response.headers
-                                            Log.i("response", response.toString());
+                                                StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                                                    @Override
+                                                    public void onResponse(String response) {
+                                                        Log.i("VOLLEY", response);
+                                                    }
+                                                }, new Response.ErrorListener() {
+                                                    @Override
+                                                    public void onErrorResponse(VolleyError error) {
+                                                        Log.e("VOLLEY", error.toString());
+                                                    }
+                                                }) {
+                                                    @Override
+                                                    public String getBodyContentType() {
+                                                        return "application/json; charset=utf-8";
+                                                    }
+
+                                                    @Override
+                                                    public byte[] getBody() throws AuthFailureError {
+                                                        try {
+                                                            return requestBody == null ? null : requestBody.getBytes("utf-8");
+                                                        } catch (UnsupportedEncodingException uee) {
+                                                            VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                                                            return null;
+                                                        }
+                                                    }
+
+                                                    @Override
+                                                    protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                                                        String responseString = "";
+                                                        if (response != null) {
+                                                            responseString = String.valueOf(response.statusCode);
+                                                            // can get more details such as response.headers
+                                                            Log.i("response", response.toString());
+                                                        }
+                                                        return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+                                                    }
+                                                };
+
+                                                requestQueue.add(stringRequest);
+
+
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
                                         }
-                                        return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+                                        else {
+                                            List<String> step_ids = new_comments.get(comm);
+                                            step_ids.add(current_step_id);
+                                            new_comments.put(comm, step_ids);
+                                            try {
+                                                final RequestQueue requestQueue = Volley.newRequestQueue(context);
+                                                String url = "https://y2y.herokuapp.com/actionitemstep";
+                                                JSONObject jo = new JSONObject();
+                                                jo.put("size", new_comments.get(comm).size());
+                                                jo.put("comment", comm);
+                                                jo.put("records", new_comments.get(comm));
+                                                jo.put("actionid", current_action_id);
+                                                final String requestBody = jo.toString();
+                                                Toast.makeText(context, "Information Saved", Toast.LENGTH_SHORT).show();
+
+                                                StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                                                    @Override
+                                                    public void onResponse(String response) {
+                                                        Log.i("VOLLEY", response);
+                                                    }
+                                                }, new Response.ErrorListener() {
+                                                    @Override
+                                                    public void onErrorResponse(VolleyError error) {
+                                                        Log.e("VOLLEY", error.toString());
+                                                    }
+                                                }) {
+                                                    @Override
+                                                    public String getBodyContentType() {
+                                                        return "application/json; charset=utf-8";
+                                                    }
+
+                                                    @Override
+                                                    public byte[] getBody() throws AuthFailureError {
+                                                        try {
+                                                            return requestBody == null ? null : requestBody.getBytes("utf-8");
+                                                        } catch (UnsupportedEncodingException uee) {
+                                                            VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                                                            return null;
+                                                        }
+                                                    }
+
+                                                    @Override
+                                                    protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                                                        String responseString = "";
+                                                        if (response != null) {
+                                                            responseString = String.valueOf(response.statusCode);
+                                                            // can get more details such as response.headers
+                                                            Log.i("response", response.toString());
+                                                        }
+                                                        return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+                                                    }
+                                                };
+
+                                                requestQueue.add(stringRequest);
+
+
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
                                     }
-                                };
-
-                                requestQueue.add(stringRequest);
-
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                                }
                             }
-
-                            //childCheckbox.get(groupPosition)[childPosition] = true;
-                            reason.setText(null);
-                            //reason.setVisibility(View.INVISIBLE);
-                            //save_reason.setVisibility(View.INVISIBLE);
                         }
                     });
                 }
@@ -497,12 +970,7 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
                 @Override
                 public void onCheckedChanged(CompoundButton complete, boolean isChecked) {
 
-                    Log.d("ischeck", String.valueOf(isChecked));
-
-
                     if (isChecked == true) {
-
-                        Log.d("hello", String.valueOf(isChecked));
                         //reason.setVisibility(View.VISIBLE);
                         //save_reason.setVisibility(View.VISIBLE);
                         Toast.makeText(context, "Please explain your action in the comment box below.", Toast.LENGTH_LONG).show();
@@ -581,11 +1049,7 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
                 @Override
                 public void onCheckedChanged(CompoundButton drop, boolean isChecked) {
 
-                    Log.d("ischeck", String.valueOf(isChecked));
-
                     if (isChecked == true) {
-
-                        Log.d("hello", String.valueOf(isChecked));
                         //reason.setVisibility(View.VISIBLE);
                         //save_reason.setVisibility(View.VISIBLE);
                         Toast.makeText(context, "Please explain your action in the comment box below.", Toast.LENGTH_LONG).show();
@@ -601,7 +1065,6 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
                                     JSONObject jo = new JSONObject();
                                     jo.put("flag", "Dropped");
                                     jo.put("actionid", current_action_id);
-
                                     jo.put("comment", reason.getText().toString());
                                     final String requestBody = jo.toString();
                                     Toast.makeText(context, "Information Saved", Toast.LENGTH_SHORT).show();
