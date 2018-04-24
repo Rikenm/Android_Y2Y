@@ -216,11 +216,8 @@ public class ViewActionFragment extends BaseFragment {
                             steps[j] = (current_action.getString(Integer.toString(j+1)));
                             step_item_ids[j] = current_action.getString("step_id"+Integer.toString(j+1));
                             Boolean temp = (current_action.getBoolean("completed"+Integer.toString(j+1)));
-                            //if (temp == "false")
-                                //checkboxList[j] = false;
                             if (temp)
                                 complete_step_ids.add(step_item_ids[j]);
-                                //checkboxList[j] = true;
                         }
                         childList.add(steps);
                         //childCheckbox.add(checkboxList);
@@ -323,7 +320,7 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
         final String current_action_id = action_item_ids.get(groupPosition);
         final String current_step_id = action_item_step_ids.get(groupPosition)[childPosition];
         TextView txtListChild = convertView.findViewById(R.id.myListItem);
-        CheckBox checkBox3 = convertView.findViewById(R.id.checkBox3);
+        final CheckBox checkBox3 = convertView.findViewById(R.id.checkBox3);
         CheckBox checkBox4 = convertView.findViewById(R.id.checkBox4);
 
         txtListChild.setText(childText);
@@ -917,6 +914,8 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
                                     }
                                 }
                             }
+                            reason.setText(null);
+                            checkBox3.setClickable(false);
                         }
                     });
                 }
@@ -1037,6 +1036,7 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
                                 }
 
                                 reason.setText(null);
+                                Header.remove(groupPosition);
                                 //reason.setVisibility(View.INVISIBLE);
                                 //save_reason.setVisibility(View.INVISIBLE);
                             }
@@ -1115,6 +1115,7 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
                                 }
 
                                 reason.setText(null);
+                                Header.remove(groupPosition);
                                 //reason.setVisibility(View.INVISIBLE);
                                 //save_reason.setVisibility(View.INVISIBLE);
                             }
