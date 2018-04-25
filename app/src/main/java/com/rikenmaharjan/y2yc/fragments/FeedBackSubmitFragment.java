@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
@@ -138,8 +139,8 @@ public class FeedBackSubmitFragment extends Fragment {
                     };
 
                     requestQueue.add(stringRequest);
-
-
+                    Toast.makeText(getActivity(), "Sent!!", Toast.LENGTH_LONG).show();
+                    feedBack.setText("");
 
                 }
                 catch (JSONException e) {
