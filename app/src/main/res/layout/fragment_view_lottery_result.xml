@@ -7,7 +7,7 @@
     tools:context="fragments.ViewLotteryResultFragment"
     android:paddingLeft="20dp"
     android:paddingRight="20dp"
-    android:background="#eeeeee"
+    android:background="#d6d6d6"
     android:layout_height="match_parent">
 
 <android.support.v7.widget.CardView
