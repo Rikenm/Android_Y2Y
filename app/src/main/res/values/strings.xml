@@ -6,5 +6,8 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="LongTermText">Long-term (morning) Lottery, for</string>>
+    <string name="eBadText">E-bed (evening) Lottery, for</string>
+    <string name="feedBackSubmitText">Tell us what you like about Y2Y, or if you have suggestions for how we can be better</string>
 
 </resources>

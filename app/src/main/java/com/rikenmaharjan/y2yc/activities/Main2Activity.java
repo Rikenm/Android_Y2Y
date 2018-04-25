@@ -2,15 +2,9 @@ package com.rikenmaharjan.y2yc.activities;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -20,7 +14,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.rikenmaharjan.y2yc.R;
 import com.rikenmaharjan.y2yc.fragments.FeedBackSubmitFragment;
@@ -104,6 +97,7 @@ public class Main2Activity extends AppCompatActivity
         }
     }
 
+    /*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -125,6 +119,7 @@ public class Main2Activity extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
+    */
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -132,7 +127,7 @@ public class Main2Activity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_lotteryResult) {
             if (vlrf == null)
                 vlrf = new ViewLotteryResultFragment();
 
@@ -141,7 +136,7 @@ public class Main2Activity extends AppCompatActivity
             ft.addToBackStack ("myFrag2");  //why do we do this?
             ft.commit();
 
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_sendFeedback) {
             if (fbsf == null)
                 fbsf = new FeedBackSubmitFragment();
 
@@ -151,7 +146,7 @@ public class Main2Activity extends AppCompatActivity
             ft.commit();
 
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_stayInfo) {
             if (sf == null)
                 sf = new StoryFragment();
 
@@ -162,7 +157,7 @@ public class Main2Activity extends AppCompatActivity
 
 
         } else if (id == R.id.nav_manage) {
-
+            session.logoutUser();
         } else if (id == R.id.nav_action) {
 
             if (ac == null)
