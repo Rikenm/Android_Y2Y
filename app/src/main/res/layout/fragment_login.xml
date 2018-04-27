@@ -84,13 +84,11 @@
         android:layout_marginBottom="100dp"
         android:layout_marginTop="20dp"
         android:layout_weight="0.3"
-        android:background="#047bb1"
-        android:hint="Sign In"
-
+        android:background="@drawable/btn_accent_round_corner"
+        android:text="Sign In"
+        android:textColor="@android:color/white"
         android:textAllCaps="false"
         android:textSize="18sp" />
-
-
 
 
 </LinearLayout>

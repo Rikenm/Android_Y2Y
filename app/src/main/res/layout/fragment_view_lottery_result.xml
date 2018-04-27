@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.widget.LinearLayout
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="fragments.ViewLotteryResultFragment"
-    android:paddingTop="20dp"
     android:paddingLeft="20dp"
     android:paddingRight="20dp"
-    android:background="#eeeeee"
+    android:background="#d6d6d6"
     android:layout_height="match_parent">
 
 <android.support.v7.widget.CardView
     xmlns:card_view = "http://schemas.android.com/apk/res-auto"
-
     android:background="#ffffff"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
     android:layout_height="400dp"
     android:layout_width="match_parent"
     card_view:cardCornerRadius="3dp"
     android:elevation="1dp"
-
-
-
     >
     <LinearLayout
         android:layout_height="match_parent"
@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="70dp"
-            android:text="Long-term (morning) Lottery, for"
+            android:text="@string/LongTermText"
             android:textColor="@color/colorAccent"
             android:textSize="18dp" />
         <TextView
@@ -58,7 +58,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="E-bed (evening) Lottery, for"
+            android:text="@string/eBadText"
             android:textColor="@color/colorAccent"
             android:textSize="18dp" />
         <TextView
@@ -86,12 +86,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:indeterminate="true" />
-
-
     </LinearLayout>
 
 </android.support.v7.widget.CardView>
 
 
 
-</android.widget.LinearLayout>
+</android.support.constraint.ConstraintLayout>

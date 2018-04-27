@@ -1,6 +1,8 @@
 package com.rikenmaharjan.y2yc.fragments;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
@@ -36,10 +39,13 @@ public class FeedBackSubmitFragment extends Fragment {
 
     private EditText feedBack;
     private Button feedBackSubmit;
+    private StoryFragment sf;
+    private FragmentManager fm;
 
     public SessionManager session;
     String id;
     String name;
+
 
 
 
@@ -79,6 +85,8 @@ public class FeedBackSubmitFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
+
 
         View view = inflater.inflate(R.layout.fragment_submit_feedback, container, false);
 
@@ -138,8 +146,15 @@ public class FeedBackSubmitFragment extends Fragment {
                     };
 
                     requestQueue.add(stringRequest);
+                    Toast.makeText(getActivity(), "Sent!!", Toast.LENGTH_LONG).show();
+                    feedBack.setText("");
 
-
+                    sf = new StoryFragment();
+                    fm = getFragmentManager();
+                    FragmentTransaction ft = fm.beginTransaction ();  //Create a reference to a fragment transaction.
+                    ft.replace(R.id.constraintLayout, sf);
+                    ft.addToBackStack ("myFrag2");  //why do we do this?
+                    ft.commit();
 
                 }
                 catch (JSONException e) {

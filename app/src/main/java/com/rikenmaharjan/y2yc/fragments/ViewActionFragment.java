@@ -380,7 +380,7 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
                                     StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                                         @Override
                                         public void onResponse(String response) {
-                                            Log.i("VOLLEY", response);
+                                            Log.i("VOLLEY", response.toString());
                                         }
                                     }, new Response.ErrorListener() {
                                         @Override
