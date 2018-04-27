@@ -1,11 +1,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/view_action"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.rikenmaharjan.y2yc.fragments.ViewActionFragment">
-
-    <!-- TODO: Update blank fragment layout -->
 
     <TextView
         android:id="@+id/txtView"
@@ -50,8 +49,6 @@
         android:orientation="horizontal">
 
 
-
-
         <ExpandableListView
             android:id="@+id/actions"
             android:layout_width="match_parent"
@@ -59,7 +56,6 @@
             android:layout_weight="1">
 
         </ExpandableListView>
-
 
 
     </LinearLayout>
@@ -85,7 +81,7 @@
             android:layout_width="match_parent"
             android:layout_height="109dp"
             android:layout_weight="1"
-            android:background="@android:drawable/alert_light_frame"
+            android:background="@android:drawable/editbox_background"
             android:hint="Why?"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"

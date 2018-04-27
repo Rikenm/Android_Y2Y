@@ -15,10 +15,15 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textSize="18dp"
+
+
             android:text="@string/feedBackSubmitText"/>
+
         <EditText
+            android:id="@+id/feedBack"
             android:layout_width="match_parent"
             android:layout_height="180dp"
+
             android:layout_marginTop="50dp"
             android:paddingTop="5dp"
             android:paddingRight="5dp"
@@ -27,6 +32,7 @@
             android:background="@drawable/bg_round_corner_bordered"
             android:gravity="left"
             android:id="@+id/feedBack"/>
+
         <Button
             android:layout_marginTop="30dp"
             android:layout_width="wrap_content"
