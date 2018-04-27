@@ -435,6 +435,10 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
                             }
                         });
                     }
+                    else if (isChecked == false) {
+                        reason.setVisibility(View.INVISIBLE);
+                        save_reason.setVisibility(View.INVISIBLE);
+                    }
                 }
             });
 
@@ -519,6 +523,10 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
                                 //fragmentTransaction.commit();
                             }
                         });
+                    }
+                    else if (isChecked == false) {
+                        reason.setVisibility(View.INVISIBLE);
+                        save_reason.setVisibility(View.INVISIBLE);
                     }
                 }
             });
