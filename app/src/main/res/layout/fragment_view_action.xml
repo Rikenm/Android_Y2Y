@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="34sp"
-            android:text="Your Events Schedule"
+            android:text="@string/events_schedule"
             android:layout_centerInParent="true"
             android:textStyle="bold"
             android:textColor="@color/white"
@@ -150,7 +150,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_centerInParent="true"
-                                android:text="SAVE"
+                                android:text="@string/save"
                                 android:textColor="@color/white"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Medium.Inverse"
                                 android:background="@drawable/btn_accent_round_corner"/>

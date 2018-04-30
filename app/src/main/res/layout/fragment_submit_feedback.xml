@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="34sp"
-            android:text="Submit Feedback"
+            android:text="@string/submit_feedback"
             android:layout_centerInParent="true"
             android:textStyle="bold"
             android:textColor="@color/white"
@@ -83,7 +83,7 @@
                     android:background="@drawable/btn_accent_round_corner"
                     android:textColor="@android:color/white"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium.Inverse"
-                    android:text="Submit"/>
+                    android:text="@string/submit"/>
 
             </LinearLayout>
 

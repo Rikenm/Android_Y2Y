@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="34sp"
-            android:text="About Your Stay"
+            android:text="@string/about_your_stay"
             android:layout_centerInParent="true"
             android:textStyle="bold"
             android:textColor="@color/white"
@@ -67,7 +67,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
                         android:layout_weight="1"
-                        android:text="Bed:"
+                        android:text="@string/bed"
                         android:textColor="@color/black_blue"
                         android:textSize="18sp" />
 
@@ -105,7 +105,7 @@
                         android:layout_weight="1"
                         android:layout_marginLeft="20dp"
                         android:textColor="@color/black_blue"
-                        android:text="Last Day of Stay: "
+                        android:text="@string/last_day_of_stay"
                         android:textSize="18sp" />
 
                     <TextView
@@ -141,7 +141,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
                         android:textColor="@color/black_blue"
-                        android:text="Warnings:"
+                        android:text="@string/warnings"
                         android:textSize="18sp" />
 
                     <LinearLayout
@@ -201,7 +201,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/black_blue"
-                        android:text="Locker Comb:"
+                        android:text="@string/locker_combo"
                         android:layout_marginLeft="20dp"
                         android:textSize="18sp" />
 
@@ -240,7 +240,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textColor="@color/black_blue"
-                        android:text="NIT:"
+                        android:text="@string/nit"
                         android:textSize="18sp" />
 
                     <TextView
