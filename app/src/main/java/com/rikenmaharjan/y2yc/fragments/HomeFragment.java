@@ -101,42 +101,29 @@ public class HomeFragment extends BaseFragment {
                 switch (smiley) {
 
 
-                    case SmileRating.BAD:
+                    case SmileRating.TERRIBLE:
                         rate ="1";
                         Log.i("tag", "Bad");
                         break;
-                    case SmileRating.GOOD:
+                    case SmileRating.BAD:
                         rate ="2";
                         Log.i(TAG, "Good");
                         break;
-                    case SmileRating.GREAT:
+                    case SmileRating.OKAY:
                         rate ="3";
                         Log.i(TAG, "Great");
                         break;
-                    case SmileRating.OKAY:
+                    case SmileRating.GOOD:
                         rate ="4";
                         Log.i(TAG, "Okay");
                         break;
-                    case SmileRating.TERRIBLE:
+                    case SmileRating.GREAT:
                         rate ="5";
                         Log.i(TAG, "Terrible");
                         break;
                 }
             }
         });
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         return rootView;
     }
@@ -154,28 +141,9 @@ public class HomeFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
 
-
-
-
-       /* if (getArguments()!=null){
-
-            id = getArguments().getString("id"); //gives me null why??????
-            name = getArguments().getString("name");
-
-            Log.e("name",name);
-
-            introTxt.setText("Hello, "+name);
-
-
-
-        } */
-
         session = new SessionManager(getActivity());
 
         session.checkLogin();
-
-
-
 
         // get user data from session
         HashMap<String, String> user = session.getUserDetails();
@@ -187,12 +155,6 @@ public class HomeFragment extends BaseFragment {
         id = user.get(SessionManager.KEY_ID);
 
         introTxt.setText("Hello, "+name);
-
-
-
-
-
-
 
     }
 
@@ -251,9 +213,6 @@ public class HomeFragment extends BaseFragment {
 
         }
 
-
-
-
     }
 
 
@@ -266,10 +225,6 @@ public class HomeFragment extends BaseFragment {
         @Override
         protected String  doInBackground(String... params) {
             // TODO Auto-generated method stub
-
-            //String json =  "{\"username\": \"sampada\",\"password\":\"password123\"}";
-
-            //id = params[1];
             Log.i("param",params[0]+"."+params[1]);
 
             String json =  "{\"rating\": \""+rate+"\",\"comment\":\""+mCommentEt.getText().toString()+"\",\"id\":\""+id+"\"}";
@@ -278,17 +233,9 @@ public class HomeFragment extends BaseFragment {
 
 
             try {
-                //URL url = new URL("http://168.122.222.63:3000/login");  // for BU localhost
-
-                //URL url = new URL("http://192.168.0.38:3000/edituser"); // riken's house
                 URL url = new URL("https://y2y.herokuapp.com/edituser");
-
-                //URL url = new URL("http://155.41.34.62:3000/edituser");
-                //https://y2y.herokuapp.com/login  my heroku
-                //URL url = new URL("http://192.168.0.38:3000/login");  // home local host
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("POST");
-                //urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 urlConnection.setRequestProperty("Content-Type","application/json");
 
                 if (json != null) {
