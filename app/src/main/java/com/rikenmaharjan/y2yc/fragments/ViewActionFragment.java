@@ -125,7 +125,6 @@ public class ViewActionFragment extends BaseFragment {
         actions.setOnGroupClickListener(new OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                //Toast.makeText(getContext(),"Group Clicked " + Header.get(groupPosition), Toast.LENGTH_SHORT).show();;
                 return false;
             }
         });
@@ -133,21 +132,18 @@ public class ViewActionFragment extends BaseFragment {
         actions.setOnGroupExpandListener(new OnGroupExpandListener() {
             @Override
             public void onGroupExpand(int groupPosition) {
-                //Toast.makeText(getContext(), Header.get(groupPosition) + " Expanded", Toast.LENGTH_SHORT).show();
             }
         });
 
         actions.setOnGroupCollapseListener(new OnGroupCollapseListener() {
             @Override
             public void onGroupCollapse(int groupPosition) {
-                //Toast.makeText(getContext(),Header.get(groupPosition) + " Collapsed", Toast.LENGTH_SHORT).show();
             }
         });
 
         actions.setOnChildClickListener(new OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                //Toast.makeText(getContext(),Header.get(groupPosition) + " : " + Child.get(Header.get(groupPosition)).get(childPosition), Toast.LENGTH_SHORT).show();
                 return false;
             }
         });
@@ -244,10 +240,6 @@ public class ViewActionFragment extends BaseFragment {
         return action_item_ids;
     }
 
-    public static List<String[]> action_item_step_ids_Data() {
-        return action_item_step_ids;
-    }
-
     public static List<Integer> get_num_steps() { return action_item_num_steps; }
 
     public static Boolean no_action_item() { return action_item_ids.size() == 0; }
@@ -269,8 +261,8 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public Object getChild(int groupPosition, int childPosititon) {
-        return this.Child.get(this.Header.get(groupPosition)).get(childPosititon);
+    public Object getChild(int groupPosition, int childPosition) {
+        return this.Child.get(this.Header.get(groupPosition)).get(childPosition);
     }
 
     @Override
@@ -334,18 +326,6 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
     }
 
 
-
-    public static void hideKeyboard(Activity activity) {
-        InputMethodManager inputManager = (InputMethodManager) activity
-                .getSystemService(Context.INPUT_METHOD_SERVICE);
-
-        // check if no view has focus:
-        View currentFocusedView = activity.getCurrentFocus();
-        if (currentFocusedView != null) {
-            inputManager.hideSoftInputFromWindow(currentFocusedView.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-        }
-    }
-
     @Override
     public View getGroupView(final int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         if (frag.no_action_item()) {
@@ -383,7 +363,6 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
                                     final RequestQueue requestQueue = Volley.newRequestQueue(context);
                                     String url = "https://y2y.herokuapp.com/actionitems";
                                     String current_action_id = frag.action_item_ids_Data().get(groupPosition);
-                                    //completed_steps.put(current_action_id, new ArrayList<String>());
                                     JSONObject jo = new JSONObject();
                                     jo.put("flag", "Completed");
                                     jo.put("actionid", current_action_id);
@@ -441,12 +420,6 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
                                 Header.remove(groupPosition);
                                 reason.setVisibility(View.INVISIBLE);
                                 save_reason.setVisibility(View.INVISIBLE);
-                                //StoryFragment story = new StoryFragment();
-                                //FragmentManager fragmentManager = frag.getActivity().getFragmentManager();
-                                //FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                                //fragmentTransaction.replace(frag.getId(), story);
-                                //fragmentTransaction.addToBackStack(null);
-                                //fragmentTransaction.commit();
                             }
                         });
                     }
@@ -473,7 +446,6 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
                                     final RequestQueue requestQueue = Volley.newRequestQueue(context);
                                     String url = "https://y2y.herokuapp.com/actionitems";
                                     String current_action_id = frag.action_item_ids_Data().get(groupPosition);
-                                    //completed_steps.put(current_action_id, null);
                                     JSONObject jo = new JSONObject();
                                     jo.put("flag", "Dropped");
                                     jo.put("actionid", current_action_id);
@@ -530,12 +502,6 @@ class MyCustomAdapter extends BaseExpandableListAdapter {
                                 Header.remove(groupPosition);
                                 reason.setVisibility(View.INVISIBLE);
                                 save_reason.setVisibility(View.INVISIBLE);
-                                //StoryFragment story = new StoryFragment();
-                                //FragmentManager fragmentManager = frag.getFragmentManager();
-                                //FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                                //fragmentTransaction.replace(frag.getId(), story);
-                                //fragmentTransaction.addToBackStack(null);
-                                //fragmentTransaction.commit();
                             }
                         });
                     }
