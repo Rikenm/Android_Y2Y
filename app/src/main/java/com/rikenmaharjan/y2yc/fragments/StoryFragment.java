@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -59,7 +60,7 @@ public class StoryFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_story,container,false);
 
-        SessionManager session = new SessionManager(getContext());
+        SessionManager session = new SessionManager(getActivity());
 
         session.checkLogin();
 
@@ -146,8 +147,6 @@ public class StoryFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-
-
     }
 
     @Override

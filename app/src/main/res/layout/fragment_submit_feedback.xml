@@ -1,42 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="10"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:background="@drawable/header"
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_height="match_parent"
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_marginLeft="40dp"
-        android:layout_marginRight="40dp">
+        android:layout_height="0dp"
+        android:layout_weight="2.7">
+
         <TextView
-            android:layout_marginTop="70dp"
+            android:id = "@+id/story_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textSize="18dp"
-            android:text="@string/feedBackSubmitText"/>
-        <EditText
+            android:textSize="34sp"
+            android:text="Submit Feedback"
+            android:layout_centerInParent="true"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            />
+
+    </RelativeLayout>
+
+
+
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="7.2"
+        android:layout_marginTop="15dp"
+        card_view:cardCornerRadius="3dp"
+        android:padding="16dp"
+        android:elevation="1dp">
+
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="180dp"
-            android:layout_marginTop="50dp"
-            android:paddingTop="5dp"
-            android:paddingRight="5dp"
-            android:paddingLeft="5dp"
-            android:paddingBottom="5dp"
-            android:background="@drawable/bg_round_corner_bordered"
-            android:gravity="left"
-            android:id="@+id/feedBack"/>
-        <Button
-            android:layout_marginTop="30dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/feedBackSubmit"
-            android:layout_gravity="center"
-            android:background="@drawable/btn_accent_round_corner"
-            android:textColor="@android:color/white"
-            android:text="Submit"/>
+            android:layout_height="match_parent">
 
-    </LinearLayout>
 
-</android.support.constraint.ConstraintLayout>
+            <LinearLayout
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="7dp"
+                    android:textAlignment="viewStart"
+                    android:layout_marginTop="15dp"
+                    android:textSize="18sp"
+                    android:textColor="@color/black_blue"
+                    android:text="@string/feedBackSubmitText"/>
+
+                <EditText
+                    android:id="@+id/feedBack"
+                    android:layout_width="match_parent"
+                    android:layout_height="140dp"
+                    android:layout_marginTop="25dp"
+                    android:paddingTop="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingLeft="5dp"
+                    android:paddingBottom="5dp"
+                    android:background="@drawable/bg_round_corner_bordered"
+                    android:gravity="left" />
+
+                <Button
+                    android:layout_marginTop="30dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/feedBackSubmit"
+                    android:layout_gravity="center"
+                    android:background="@drawable/btn_accent_round_corner"
+                    android:textColor="@android:color/white"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium.Inverse"
+                    android:text="Submit"/>
+
+            </LinearLayout>
+
+
+        </ScrollView>
+
+
+
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

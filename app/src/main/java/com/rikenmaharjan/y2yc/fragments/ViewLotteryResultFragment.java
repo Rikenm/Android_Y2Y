@@ -55,7 +55,7 @@ public class ViewLotteryResultFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        session = new SessionManager(getContext());
+        session = new SessionManager(getActivity());
 
         session.checkLogin();
 

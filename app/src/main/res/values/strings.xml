@@ -8,6 +8,15 @@
     <string name="action_settings">Settings</string>
     <string name="LongTermText">Long-term (morning) Lottery, for</string>>
     <string name="eBadText">E-bed (evening) Lottery, for</string>
-    <string name="feedBackSubmitText">Tell us what you like about Y2Y, or if you have suggestions for how we can be better</string>
+    <string name="feedBackSubmitText">Tell us what you like about Y2Y, or if you have suggestions for how we can be better.</string>
+
+
+    <string name="Lottery">Lottery</string>
+    <string name="Feedback">Feedback</string>
+    <string name="Your_stay">Your Stay</string>
+    <string name="Action_items">Action Items</string>
+    <string name="Log_Out">Log Out</string>
+    <string name="soft_keyboard">SoftKeyboard</string>
+
 
 </resources>

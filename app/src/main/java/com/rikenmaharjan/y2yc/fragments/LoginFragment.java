@@ -95,7 +95,7 @@ public class LoginFragment extends BaseFragment {
 
 
 
-        session = new SessionManager(getContext());
+        session = new SessionManager(getActivity());
         View rootView = inflater.inflate(R.layout.fragment_login,container,false);
         mUnbinder = ButterKnife.bind(this,rootView);
 
@@ -255,13 +255,13 @@ public class LoginFragment extends BaseFragment {
             if (isvalid.equals("invalid")) {
 
                 Log.i("isValid", "Invalid");
-                Toast.makeText(getContext(), "Invalid Username or Password", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Invalid Username or Password", Toast.LENGTH_SHORT).show();
                 mLoginButton.setEnabled(true);
 
 
             } else if (isvalid.equals("Network Error")) {
                 Log.i("isValid", "Network Error");
-                Toast.makeText(getContext(), "Network Error", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Network Error", Toast.LENGTH_SHORT).show();
                 mLoginButton.setEnabled(true);
 
             } else {

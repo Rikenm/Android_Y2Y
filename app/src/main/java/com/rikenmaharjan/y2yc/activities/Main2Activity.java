@@ -1,7 +1,9 @@
 package com.rikenmaharjan.y2yc.activities;
 
+import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -14,6 +16,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
 
 import com.rikenmaharjan.y2yc.R;
 import com.rikenmaharjan.y2yc.fragments.FeedBackSubmitFragment;
@@ -22,6 +27,8 @@ import com.rikenmaharjan.y2yc.fragments.StoryFragment;
 import com.rikenmaharjan.y2yc.fragments.ViewActionFragment;
 import com.rikenmaharjan.y2yc.fragments.ViewLotteryResultFragment;
 import com.rikenmaharjan.y2yc.utils.SessionManager;
+
+import java.util.HashMap;
 
 public class Main2Activity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -33,6 +40,8 @@ public class Main2Activity extends AppCompatActivity
     private StoryFragment sf;
     private FragmentManager fm;
     private HomeFragment hm;
+    private TextView navUsername;
+    public String name;
     public String sender;
     public SessionManager session;
     public ViewActionFragment ac;
@@ -48,6 +57,13 @@ public class Main2Activity extends AppCompatActivity
 
         setSupportActionBar(toolbar);
         session = new SessionManager(getApplicationContext());
+
+        session.checkLogin();
+
+        // get user data from session
+        HashMap<String, String> user = session.getUserDetails();
+
+        name = user.get(SessionManager.KEY_NAME);
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -70,6 +86,11 @@ public class Main2Activity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        View headerView = navigationView.getHeaderView(0);
+        navUsername = (TextView) headerView.findViewById(R.id.navUsername);
+        navUsername.setText("Hello, "+ name);
+
 
         fbsf = new FeedBackSubmitFragment();
         vlrf = new ViewLotteryResultFragment();
@@ -121,6 +142,17 @@ public class Main2Activity extends AppCompatActivity
     }
     */
 
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager inputManager = (InputMethodManager) activity
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        // check if no view has focus:
+        View currentFocusedView = activity.getCurrentFocus();
+        if (currentFocusedView != null) {
+            inputManager.hideSoftInputFromWindow(currentFocusedView.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
+    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -149,6 +181,10 @@ public class Main2Activity extends AppCompatActivity
         } else if (id == R.id.nav_stayInfo) {
             if (sf == null)
                 sf = new StoryFragment();
+
+
+            hideKeyboard(this);
+
 
             FragmentTransaction ft = fm.beginTransaction ();  //Create a reference to a fragment transaction.
             ft.replace(R.id.constraintLayout, sf);

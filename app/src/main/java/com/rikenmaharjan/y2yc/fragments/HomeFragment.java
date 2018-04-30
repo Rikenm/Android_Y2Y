@@ -1,5 +1,6 @@
 package com.rikenmaharjan.y2yc.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -11,6 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
@@ -79,6 +82,7 @@ public class HomeFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home,container,false);
+
         mUnbinder = ButterKnife.bind(this,rootView);
 
 
@@ -166,7 +170,7 @@ public class HomeFragment extends BaseFragment {
 
         } */
 
-        session = new SessionManager(getContext());
+        session = new SessionManager(getActivity());
 
         session.checkLogin();
 
@@ -207,20 +211,24 @@ public class HomeFragment extends BaseFragment {
     }
 
 
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager inputManager = (InputMethodManager) activity
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
 
-
-
-
-
-
-
-
+        // check if no view has focus:
+        View currentFocusedView = activity.getCurrentFocus();
+        if (currentFocusedView != null) {
+            inputManager.hideSoftInputFromWindow(currentFocusedView.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
+    }
 
 
 
 
     @OnClick(R2.id.fragment_home_btnsave)
     public void setmSaveButton(){
+
+        hideKeyboard(getActivity());
 
         String sComment = mCommentEt.getText().toString();
 
@@ -229,13 +237,17 @@ public class HomeFragment extends BaseFragment {
             //return;
         }
         else{
-            Log.i("hell0","enter");
 
+
+            Log.i("hell0","enter");
 
 
             //Log.i("Id",id);
 
             new HomeFragment.MyAsyncTaskget().execute(id, "hello", "hello");
+
+
+            mCommentEt.setText("");
 
         }
 
@@ -345,12 +357,12 @@ public class HomeFragment extends BaseFragment {
             if(result2.equals("success") ) {
 
                 Log.i("isSucess", "sucess");
-                Toast.makeText(getContext(), "Saved", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Saved", Toast.LENGTH_SHORT).show();
             }
             else if (result2.equals("error")){
 
                 Log.i("isSuccess", "Error");
-                Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
             }
         }
     }

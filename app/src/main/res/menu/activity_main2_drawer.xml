@@ -3,29 +3,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
+
     <group android:checkableBehavior="single">
+
         <item
             android:id="@+id/nav_lotteryResult"
-
-            android:title="Lottery" />
+            android:icon = "@drawable/lottery"
+            android:title="@string/Lottery" />
         <item
             android:id="@+id/nav_sendFeedback"
-
-            android:title="Feedback" />
+            android:icon = "@drawable/feedback"
+            android:title="@string/Feedback" />
         <item
             android:id="@+id/nav_stayInfo"
-
-            android:title="Your stay" />
+            android:icon = "@drawable/stay"
+            android:title="@string/Your_stay" />
         <item
             android:id="@+id/nav_action"
-
-            android:title="Action items" />
-
+            android:icon = "@drawable/activity"
+            android:title="@string/Action_items" />
 
         <item
             android:id="@+id/nav_manage"
-
-            android:title="Log Out" />
+            android:icon = "@drawable/logout"
+            android:title="@string/Log_Out" />
     </group>
 
 
