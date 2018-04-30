@@ -15,7 +15,6 @@
         android:layout_width="match_parent"
         android:layout_height="170dp"
         android:orientation = "vertical">
-
         <ImageView
             android:layout_width="400dp"
             android:layout_height="200dp"
@@ -23,8 +22,6 @@
             android:background="@drawable/y2y_inner_top"
             android:alpha="0.4"
             android:cropToPadding="true" />
-
-
         <ImageView
             android:layout_width="150dp"
             android:layout_height="150dp"
