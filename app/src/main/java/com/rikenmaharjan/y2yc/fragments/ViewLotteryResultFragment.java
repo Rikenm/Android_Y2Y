@@ -56,22 +56,15 @@ public class ViewLotteryResultFragment extends Fragment {
         super.onResume();
 
         session = new SessionManager(getActivity());
-
         session.checkLogin();
-
-
-
-
         // get user data from session
         HashMap<String, String> user = session.getUserDetails();
 
-        // name
+        // Get the name of the user
         name = user.get(SessionManager.KEY_NAME);
 
-        // email
+        // Get logged in users user id
         id = user.get(SessionManager.KEY_ID);
-
-
     }
 
     @Override
@@ -84,16 +77,17 @@ public class ViewLotteryResultFragment extends Fragment {
         longTermLottery = (TextView) view.findViewById(R.id.longTermLottery);
         eBedLottery = (TextView) view.findViewById(R.id.eBedLottery);
 
+        // Get the current date from the android system
         String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
 
         date1.setText(currentDateTimeString);
         date2.setText(currentDateTimeString);
-        //new MyAsyncTaskgetNews2().execute("hello", "hello", "hello");
 
+        // Use the Volley package to make the Http get request
         RequestQueue queue = Volley.newRequestQueue(getActivity());
         String url = "https://y2y.herokuapp.com/lottery";
 
-
+        // Create the StringRequest to pass in to request queue later
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -101,6 +95,8 @@ public class ViewLotteryResultFragment extends Fragment {
                 try{
                     JSONObject apiResult = new JSONObject(response);
                     view.findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+
+                    // Take out the information form the JSON
                     eBedLottery.setText(apiResult.getString("e-bed"));
                     longTermLottery.setText(apiResult.getString("Long Term"));
                 }
@@ -113,6 +109,7 @@ public class ViewLotteryResultFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error){
                 Log.i("request failed", "failed");
+                Toast.makeText(getActivity(), "There is a problem, Please check your internet", Toast.LENGTH_LONG).show();
             }
         });
 

@@ -53,11 +53,9 @@ public class Main2Activity extends AppCompatActivity
         setContentView(R.layout.activity_main2);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-
-
         setSupportActionBar(toolbar);
-        session = new SessionManager(getApplicationContext());
 
+        session = new SessionManager(getApplicationContext());
         session.checkLogin();
 
         // get user data from session
@@ -70,8 +68,6 @@ public class Main2Activity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
                 session.logoutUser();
 
             }
@@ -101,9 +97,9 @@ public class Main2Activity extends AppCompatActivity
 
         fm = getFragmentManager();
 
-        FragmentTransaction ft = fm.beginTransaction ();  //Create a reference to a fragment transaction.
-        ft.add(R.id.constraintLayout, hm, "tag1");  //now we have added our fragement to our Activity programmatically.  The other fragments exist, but have not been added yet.
-        ft.addToBackStack ("myFrag1");  //why do we do this?
+        FragmentTransaction ft = fm.beginTransaction ();
+        ft.add(R.id.constraintLayout, hm, "tag1");
+        ft.addToBackStack ("myFrag1");
         ft.commit ();
 
     }
@@ -118,29 +114,6 @@ public class Main2Activity extends AppCompatActivity
         }
     }
 
-    /*
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main2, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-    */
 
     public static void hideKeyboard(Activity activity) {
         InputMethodManager inputManager = (InputMethodManager) activity
@@ -159,16 +132,18 @@ public class Main2Activity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+        // This will replace the fragment to the view lottery result fragment
         if (id == R.id.nav_lotteryResult) {
             if (vlrf == null)
                 vlrf = new ViewLotteryResultFragment();
-
             FragmentTransaction ft = fm.beginTransaction ();  //Create a reference to a fragment transaction.
             ft.replace(R.id.constraintLayout, vlrf);
             ft.addToBackStack ("myFrag2");  //why do we do this?
             ft.commit();
+        }
 
-        } else if (id == R.id.nav_sendFeedback) {
+        // This will replace the fragment to the send feedback fragment
+        else if (id == R.id.nav_sendFeedback) {
             if (fbsf == null)
                 fbsf = new FeedBackSubmitFragment();
 
@@ -176,35 +151,32 @@ public class Main2Activity extends AppCompatActivity
             ft.replace(R.id.constraintLayout, fbsf);
             ft.addToBackStack ("myFrag2");  //why do we do this?
             ft.commit();
+        }
 
-
-        } else if (id == R.id.nav_stayInfo) {
+        // This will replace the fragment to the user info page
+        else if (id == R.id.nav_stayInfo) {
             if (sf == null)
                 sf = new StoryFragment();
-
-
             hideKeyboard(this);
-
-
             FragmentTransaction ft = fm.beginTransaction ();  //Create a reference to a fragment transaction.
             ft.replace(R.id.constraintLayout, sf);
             ft.addToBackStack ("myFrag2");  //why do we do this?
             ft.commit();
+        }
 
-
-        } else if (id == R.id.nav_manage) {
+        // This will log out the user and jump to the login page
+        else if (id == R.id.nav_manage) {
             session.logoutUser();
-        } else if (id == R.id.nav_action) {
+        }
 
+        // This will render the action item page
+        else if (id == R.id.nav_action) {
             if (ac == null)
                 ac = new ViewActionFragment();
-
             FragmentTransaction ft = fm.beginTransaction ();  //Create a reference to a fragment transaction.
             ft.replace(R.id.constraintLayout, ac);
             ft.addToBackStack ("myFrag2");  //why do we do this?
             ft.commit();
-
-
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -214,15 +186,5 @@ public class Main2Activity extends AppCompatActivity
 
     protected void onResume() {
         super.onResume();
-
-
-
-
-
-
-
     }
-
-
-
 }

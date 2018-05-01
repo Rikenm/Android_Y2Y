@@ -49,9 +49,6 @@ public class FeedBackSubmitFragment extends Fragment {
     String id;
     String name;
 
-
-
-
     public FeedBackSubmitFragment(){}
 
 
@@ -62,16 +59,13 @@ public class FeedBackSubmitFragment extends Fragment {
 
         session.checkLogin();
 
-
-
-
         // get user data from session
         HashMap<String, String> user = session.getUserDetails();
 
-        // name
+        // Get logged in user's user name
         name = user.get(SessionManager.KEY_NAME);
 
-        // email
+        // Get looged in user's user id
         id = user.get(SessionManager.KEY_ID);
 
     }
@@ -80,7 +74,6 @@ public class FeedBackSubmitFragment extends Fragment {
     public static void hideKeyboard(Activity activity) {
         InputMethodManager inputManager = (InputMethodManager) activity
                 .getSystemService(Context.INPUT_METHOD_SERVICE);
-
         // check if no view has focus:
         View currentFocusedView = activity.getCurrentFocus();
         if (currentFocusedView != null) {
@@ -88,21 +81,14 @@ public class FeedBackSubmitFragment extends Fragment {
         }
     }
 
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
-
-
         View view = inflater.inflate(R.layout.fragment_submit_feedback, container, false);
 
         feedBack = (EditText) view.findViewById(R.id.feedBack);
         feedBackSubmit = (Button) view.findViewById(R.id.feedBackSubmit);
-
-
 
         feedBackSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,13 +98,15 @@ public class FeedBackSubmitFragment extends Fragment {
 
                 String feedBackText = feedBack.getText().toString();
                 try {
+                    // Going to use the request queue to make the http post request
                     RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
                     String url = "https://y2y.herokuapp.com/feedback";
+
+                    // The data we are going to send will be in a JSON
                     JSONObject jsonBody = new JSONObject();
                     jsonBody.put("id", id);
                     jsonBody.put("comment", feedBackText);
                     final String requestBody = jsonBody.toString();
-
 
                     StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                         @Override
@@ -138,6 +126,7 @@ public class FeedBackSubmitFragment extends Fragment {
                             return "application/json; charset=utf-8";
                         }
 
+                        // Change the JSON to list of string and send it out.
                         @Override
                         public byte[] getBody() throws AuthFailureError {
                             try {
@@ -161,26 +150,20 @@ public class FeedBackSubmitFragment extends Fragment {
                     };
 
                     requestQueue.add(stringRequest);
-                    //Toast.makeText(getActivity(), "Feedback Sent!!", Toast.LENGTH_LONG).show();
+
                     feedBack.setText("");
 
+                    // Replace to new fragment
                     sf = new StoryFragment();
                     fm = getFragmentManager();
                     FragmentTransaction ft = fm.beginTransaction ();  //Create a reference to a fragment transaction.
                     ft.replace(R.id.constraintLayout, sf);
                     ft.addToBackStack ("myFrag2");  //why do we do this?
                     ft.commit();
-
                 }
                 catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-
-
-
-
-
             }
         });
 
