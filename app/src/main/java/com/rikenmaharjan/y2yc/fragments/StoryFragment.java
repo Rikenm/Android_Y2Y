@@ -43,12 +43,9 @@ public class StoryFragment extends BaseFragment {
     private String id;
     private String name;
 
-
-
     public static StoryFragment newInstance(){
         return new StoryFragment();
     }
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,9 +61,6 @@ public class StoryFragment extends BaseFragment {
 
         session.checkLogin();
 
-
-
-
         // get user data from session
         HashMap<String, String> user = session.getUserDetails();
 
@@ -75,9 +69,6 @@ public class StoryFragment extends BaseFragment {
 
         // email
         id = user.get(SessionManager.KEY_ID);
-
-
-
 
         txtBedR = (TextView) view.findViewById(R.id.txtBedR);
         txtDayR = (TextView) view.findViewById(R.id.txtDayR);
@@ -97,17 +88,23 @@ public class StoryFragment extends BaseFragment {
                 try{
                     JSONObject apiResult = new JSONObject(response);
                     view.findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+                    // get bed assignment
                     txtBedR.setText(apiResult.getString("Bed_name"));
-
+                    //get last day of stay
                     String date = apiResult.getString("Last_Day_Of_Stay");
                     date = date.replace("-", "");
                     Date now = new Date();
                     String currentDateTimeString = DateFormat.getInstance().format(now);
                     String[] currentDate = currentDateTimeString.split("/");
                     String month = currentDate[0];
+                    String day = currentDate[1];
                     if(Integer.parseInt(month) < 10)
                         month = "0" + month;
-                    String cdate = "20" + currentDate[2].split(" ")[0]+ month +currentDate[1];
+                    if(Integer.parseInt(day)<10){
+                        day = "0" + day;
+                    }
+                    String cdate = "20" + currentDate[2].split(" ")[0]+ month + day;
+                    //compare the date with the current date
                     if(date.equals("N/A")) {
                         txtDayR.setText("N/A");
                     }
@@ -117,11 +114,19 @@ public class StoryFragment extends BaseFragment {
                         else
                             txtDayR.setText(date);
                     }
-
+                    //get locker number
                     txtLockerR.setText(apiResult.getString("Locker"));
+                    //get number of warnings
                     txtMinor.setText(apiResult.getString("Minor_warning")+" Minor");
                     txtMajor.setText(apiResult.getString("Major_warning")+" Major");
-                    txtNITR.setText(apiResult.getString("NIT"));
+                    //get nit
+                    String nit = apiResult.getString("NIT");
+                    if(nit.equals("0")){
+                        nit = "No";
+                    }
+                    else
+                        nit = "Yes";
+                    txtNITR.setText(nit);
                 }
                 catch (JSONException e) {
                     e.printStackTrace();
